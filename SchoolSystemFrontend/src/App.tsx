@@ -1,33 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import Navbar from './components/Navbar'
+import Login from './components/Login'
+import StudentsTab from './components/StudentsTab'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Login />}></Route>
+          <Route path='/students-tab' element={<StudentsTab />}></Route>
+          {/* <Route path='/sign-up/teacher' element={<Register />}></Route>
+          <Route path='/sign-up/student' element={<RegisterStudent />}></Route>
+          <Route path='/problem' element={<ProblemView />}></Route>
+          <Route path='/courses-tab/:courseCode' element={<ProblemView />}></Route>
+          <Route path='/courses-tab/:courseCode/lecture/:header' element={<ProblemView />}></Route>
+          <Route path='/courses-tab/:courseCode//lecture/:header' element={<ProblemView />}></Route>
+          <Route path='/user-profile' element={<UserProfile />}></Route>
+          <Route path='/students-tab' element={<StudentsTab />}></Route>
+          <Route path='/courses-tab' element={<CoursesTab />}></Route>
+          <Route path='/home' element={<HomePage />}></Route>
+          <Route path='/create-quiz' element={<CreateQuiz />}></Route>
+          <Route path='/quiz-page' element={<QuizPage />}></Route>
+          <Route path='/change-email' element={<ChangeEmail />}></Route>
+          <Route path='/change-password' element={<ChangePassword />}></Route>
+          <Route path='/reset-password' element={<ResetPassword />}></Route>
+          <Route path='/courses-tab/enroll' element={<Enroll />}></Route>
+          <Route path='/courses-tab/add' element={<AddCourse />}></Route>
+          <Route path='/courses-tab/addLecture' element={<AddLecture />}></Route>
+          <Route path='/quiz/fallback' element={<QuizFallback />}></Route> */}
+        </Routes>
+      </BrowserRouter>
+
+
+     {/* <p className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Test tailwindcss</p> */}
     </>
   )
 }
