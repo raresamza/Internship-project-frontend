@@ -3,6 +3,9 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Login from './components/Login'
 import StudentsTab from './components/StudentsTab'
+import TeachersTab from './components/TeachersTab'
+import UserProfile from './components/UserProfile'
+import CatalogueTab from './components/CatalogueTab'
 
 function App() {
 
@@ -12,6 +15,9 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />}></Route>
           <Route path='/students-tab' element={<StudentsTab />}></Route>
+          <Route path='/teachers-tab' element={<TeachersTab />}></Route>
+          <Route path='/user-profile' element={<UserProfile />}></Route>
+          <Route path='/catalogue' element={<CatalogueTab />}></Route>
           {/* <Route path='/sign-up/teacher' element={<Register />}></Route>
           <Route path='/sign-up/student' element={<RegisterStudent />}></Route>
           <Route path='/problem' element={<ProblemView />}></Route>
