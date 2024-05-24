@@ -1,6 +1,7 @@
 import Navbar from './Navbar'
 import { useState, useEffect } from 'react'
 import Student from './Student'
+import Teacher from './Teacher';
 
 // import UserService from '../service/UserService'
 // import { useCookies } from 'react-cookie';
@@ -61,12 +62,13 @@ const TeachersTab = () => {
                 <table className='border-separate border-spacing-y-6'>
                 {!loading && (
             <tbody>
-              {teachers.map((teacher) => (
-                <Student
+              {teachers.map((teacher, index) => (
+                <Teacher
                   key={teacher.id}
                   firstName={teacher.firstName}
                   lastName={teacher.lastName}
                   email={teacher.email}
+                  index={index}
                 />
               ))}
             </tbody>
