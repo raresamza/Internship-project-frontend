@@ -38,7 +38,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ courses }) => {
                             animate={{ x: 0, opacity: 1 }} // Animation when trigger appears
                             transition={{ delay: index * 0.1 }} // Staggered animation delay
                         >
-                            <CollapsibleTrigger onClick={() => handleCourseSelect(course)}>
+                            <CollapsibleTrigger onClick={() => handleCourseSelect(course)} className='text-white bg-emerald-500 hover:bg-emerald-600'>
                                 {course.name}
                             </CollapsibleTrigger>
                         </motion.div> 
@@ -50,31 +50,37 @@ const Catalogue: React.FC<CatalogueProps> = ({ courses }) => {
                                 exit={{ opacity: 0, y: -50 }}
                             >
                                 <Card>
-                                    <CardHeader className='bg-gray-200 rounded-t-xl'>
-                                        <CardTitle>{course.name}</CardTitle>
+                                    <CardHeader className='bg-emerald-200 rounded-t-xl'>
+                                        <CardTitle className='text-green-900 border-b-2 border-black pb-2 '>{course.name}</CardTitle>
                                     </CardHeader>
-                                    <CardContent className='pl-10 bg-gray-200'>
-                                        <h2 className=' text-lg font-semibold'>Grades</h2>
+                                    <CardContent className='pl-10 bg-emerald-200'>
+                                        <div className='border border-black rounded-lg mb-4 p-2'>
+                                        <h2 className=' text-lg font-semibold text-green-900'>Grades</h2>
                                         <ul>
                                             {course.grades.map((grade, index) => (
-                                                <li className='pl-2' key={index}>{grade.subject}: {grade.grade}</li>
+                                                <li className='pl-2 text-gray-700' key={index}>{grade.subject}: {grade.grade}</li>
                                             ))}
                                         </ul>
-                                        <h2 className=' text-lg font-semibold'>GPAs</h2>
+                                        </div>
+                                        <div className='border border-black rounded-lg mb-4 p-2'>
+                                        <h2 className=' text-lg font-semibold text-green-900'>GPAs</h2>
                                         <ul>
                                             {course.gpas.map((gpa, index) => (
-                                                <li className='pl-2' key={index}>{gpa.semester}: {gpa.gpa}</li>
+                                                <li className='pl-2 text-gray-700' key={index}>{gpa.semester}: {gpa.gpa}</li>
                                             ))}
                                         </ul>
-                                        <h2 className=' text-lg font-semibold'> Absences</h2>
+                                        </div>
+                                        <div className='border border-black rounded-lg mb-4 p-2'>
+                                        <h2 className=' text-lg font-semibold text-green-900'> Absences</h2>
                                         <ul>
                                             {course.absences.map((absence, index) => (
-                                                <li className='pl-2' key={index}>{absence.date}: {absence.count} absences</li>
+                                                <li className='pl-2 text-gray-700' key={index}>{absence.date}: {absence.count} absences</li>
                                             ))}
                                         </ul>
+                                        </div>
                                     </CardContent>
-                                    <CardFooter className='bg-gray-200 rounded-b-xl'>
-                                        <p>Additional content if needed</p>
+                                    <CardFooter className='bg-emerald-200 rounded-b-xl shadow-xl'>
+                                        <p className='text-gray-700'>Info was last updated on: {new Date().toLocaleDateString("ro-RO")}</p>
                                     </CardFooter>
                                 </Card>
                             </motion.div>
