@@ -6,6 +6,8 @@ import StudentsTab from './components/StudentsTab'
 import TeachersTab from './components/TeachersTab'
 import UserProfile from './components/UserProfile'
 import CatalogueTab from './components/CatalogueTab'
+import CoursesTab from './components/CoursesTab'
+import CourseDetails from './components/CourseDetails'
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
           <Route path='/teachers-tab' element={<TeachersTab />}></Route>
           <Route path='/user-profile' element={<UserProfile />}></Route>
           <Route path='/catalogue' element={<CatalogueTab />}></Route>
+          <Route path="/courses" element={<CoursesTab />} />
+          <Route path="/courses/:courseId" element={<CourseDetails />} />
           {/* <Route path='/sign-up/teacher' element={<Register />}></Route>
           <Route path='/sign-up/student' element={<RegisterStudent />}></Route>
           <Route path='/problem' element={<ProblemView />}></Route>
@@ -41,7 +45,7 @@ function App() {
       </BrowserRouter>
 
 
-     {/* <p className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Test tailwindcss</p> */}
+      {/* <p className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Test tailwindcss</p> */}
     </>
   )
 }
