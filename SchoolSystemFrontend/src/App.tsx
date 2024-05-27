@@ -8,7 +8,7 @@ import UserProfile from './components/UserProfile'
 import CatalogueTab from './components/CatalogueTab'
 import CoursesTab from './components/CoursesTab'
 import CourseDetails from './components/CourseDetails'
-
+import Home from './components/Home'
 function App() {
 
   return (
@@ -22,6 +22,7 @@ function App() {
           <Route path='/catalogue' element={<CatalogueTab />}></Route>
           <Route path="/courses" element={<CoursesTab />} />
           <Route path="/courses/:courseId" element={<CourseDetails />} />
+          <Route path='/home' element={<Home/>}/>
           {/* <Route path='/sign-up/teacher' element={<Register />}></Route>
           <Route path='/sign-up/student' element={<RegisterStudent />}></Route>
           <Route path='/problem' element={<ProblemView />}></Route>

@@ -26,7 +26,7 @@ const Navbar = () => {
                     <Link to="/teachers-tab" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' >Teachers</Link>
                 </li>
                 <li>
-                    <Link to="/courses-tab" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold '>Lessons</Link>
+                    <Link to="/courses" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold '>Lessons</Link>
                 </li>
 
                 <li>

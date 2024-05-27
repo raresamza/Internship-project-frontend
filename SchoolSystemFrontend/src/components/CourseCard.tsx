@@ -21,15 +21,17 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        navigate(`/course/${course.id}`);
+        navigate(`/courses/${course.id}`);
     };
 
+    console.log(course.id)
+
     return (
-        <Card onClick={handleCardClick} style={{ cursor: 'pointer' }}>
+        <Card className='mb-4 bg-gradient-to-br from-[#00d4ff] to-[#090979] text-white' onClick={handleCardClick} style={{ cursor: 'pointer' }}>
           <CardHeader>
-            <h2>{course.name}</h2>
+            <h2 className='text-lg font-bold'>{course.name}</h2>
           </CardHeader>
-          <CardContent>
+          <CardContent className='font-semibold'>
             <p>Subject: {course.subject}</p>
             <p>Teacher ID: {course.teacherId}</p>
           </CardContent>

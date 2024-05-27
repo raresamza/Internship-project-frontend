@@ -45,6 +45,5 @@ const Login = () => {
     );
 };
 
-//3 ron
 
 export default Login;
