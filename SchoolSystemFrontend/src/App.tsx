@@ -8,21 +8,22 @@ import UserProfile from './components/UserProfile'
 import CatalogueTab from './components/CatalogueTab'
 import CoursesTab from './components/CoursesTab'
 import CourseDetails from './components/CourseDetails'
-import Home from './components/Home'
+import Homepage from './components/Homepage'
 function App() {
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Login />}></Route>
+          <Route path='/sign-in' element={<Login />}></Route>
           <Route path='/students-tab' element={<StudentsTab />}></Route>
           <Route path='/teachers-tab' element={<TeachersTab />}></Route>
           <Route path='/user-profile' element={<UserProfile />}></Route>
           <Route path='/catalogue' element={<CatalogueTab />}></Route>
           <Route path="/courses" element={<CoursesTab />} />
           <Route path="/courses/:courseId" element={<CourseDetails />} />
-          <Route path='/home' element={<Home/>}/>
+          <Route path='/home' element={<Homepage/>}/>
+          <Route path='/' element={<Homepage/>}/>
           {/* <Route path='/sign-up/teacher' element={<Register />}></Route>
           <Route path='/sign-up/student' element={<RegisterStudent />}></Route>
           <Route path='/problem' element={<ProblemView />}></Route>

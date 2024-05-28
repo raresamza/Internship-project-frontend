@@ -33,7 +33,7 @@ const Navbar = () => {
                     <Link to="/catalogue" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' > Catalogue</Link>
                 </li>
                 <li>
-                    <Link to="/user-profile" className='text-2xl'><FontAwesomeIcon icon={faUser} /></Link>
+                    <Link to="/user-profile" className='text-2xl hover:bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full overflow-hidden '><FontAwesomeIcon icon={faUser} /></Link>
                 </li>
                 {/* <li>
                     <Link to="/home" className='text-2xl'>   <FontAwesomeIcon icon={faFire} /></Link>
