@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Student from './Student';
 import SearchBar from './Seachbar';
 import { getUsers } from '../api/StudentService';
+import { motion } from 'framer-motion';
 
 
 interface Student {
@@ -41,26 +42,15 @@ const StudentsTab: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState<Student[]>([]);
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     const fetchedStudents = [
-  //       { id: 1, firstName: 'Rares', lastName: 'Amza', email: 'raresamza@gmail.com' },
-  //       { id: 2, firstName: 'John', lastName: 'Doe', email: 'johndoe@gmail.com' },
-  //       { id: 3, firstName: 'Rares', lastName: 'Amza', email: 'raresamza@gmail.com' }
-  //     ];
-  //     setStudents(fetchedStudents);
-  //     setFilteredStudents(fetchedStudents);
-  //     setLoading(false);
-  //   }, 1000);
-  // }, []);
+  const [pageNumber, setPageNumber] = useState(1); // Track current page number
+  const [pageSize] = useState(5); // Page size
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const fetchedStudents = await getUsers();
-        setStudents(fetchedStudents);
-        setFilteredStudents(fetchedStudents);
+        const fetchedStudents = await getUsers(pageNumber, pageSize);
+        setStudents(fetchedStudents); // Replace existing data with new data
+        setFilteredStudents(fetchedStudents); // Update filtered data as well
       } catch (error) {
         console.error('Error fetching students:', error);
       } finally {
@@ -69,7 +59,17 @@ const StudentsTab: React.FC = () => {
     };
 
     fetchStudents();
-  }, []);
+  }, [pageNumber]); // Fetch data whenever page number changes
+
+  const handleLoadMore = () => {
+    setPageNumber(prevPageNumber => prevPageNumber + 1); // Increment page number to fetch next page
+  };
+
+  const handlePreviousPage = () => {
+    if (pageNumber > 1) {
+      setPageNumber(prevPageNumber => prevPageNumber - 1); // Decrement page number to go back
+    }
+  };
 
   const handleSearch = (query: string) => {
     const filtered = students.filter(student => {
@@ -95,17 +95,41 @@ const StudentsTab: React.FC = () => {
                   parentEmail={student.parentEmail}
                   index={index} // Pass index to Student
                   id={student.id}
-                  parentName={student.parentName} 
-                  age={0} address={student.address} 
-                  phoneNumber={student.phoneNumber} 
-                  grades={student.grades} 
-                  gpAs={student.gpAs} 
-                  absences={student.absences} 
-                  />
+                  parentName={student.parentName}
+                  age={0} address={student.address}
+                  phoneNumber={student.phoneNumber}
+                  grades={student.grades}
+                  gpAs={student.gpAs}
+                  absences={student.absences}
+                />
               ))}
             </tbody>
           )}
         </table>
+        <div className="flex justify-between mt-4">
+          {pageNumber > 1 && (
+            <motion.button
+              className='bg-red-500 text-white hover:bg-red-700 rounded-md h-10 px-4 py-2'
+              onClick={handlePreviousPage}
+              initial={{ x: -150, opacity: 0 }} // Initial animation state
+              animate={{ x: 0, opacity: 1 }} // Animation when trigger appears
+              transition={{ delay: 0.3 }}
+            >
+              Previous
+            </motion.button>
+          )}
+          {students.length > 0 && students.length % pageSize === 0 && (
+            <motion.button
+              className='bg-green-500 text-white hover:bg-green-700 rounded-md h-10 px-4 py-2'
+              onClick={handleLoadMore}
+              initial={{ x: -150, opacity: 0 }} // Initial animation state
+              animate={{ x: 0, opacity: 1 }} // Animation when trigger appears
+              transition={{ delay: 0.3 }}
+            >
+              Load More
+            </motion.button>
+          )}
+        </div>
       </div>
     </>
   );
