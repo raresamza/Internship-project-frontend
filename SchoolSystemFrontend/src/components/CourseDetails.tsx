@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Card, CardHeader, CardContent, CardFooter } from '../@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../@/components/ui/select';
 import { AnimatePresence, motion } from 'framer-motion';
+import Navbar from './Navbar';
 
 
 interface Course {
@@ -32,8 +33,10 @@ const CourseDetails = () => {
   };
 
   return (
+    <>
+    <Navbar/>
       <motion.div
-        className='flex items-center justify-center min-h-screen w-full'
+        className='flex items-center justify-center min-h-[calc(100vh-80px)] w-full'
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
@@ -118,7 +121,7 @@ const CourseDetails = () => {
           </CardFooter>
         </Card>
       </motion.div>
-    
+    </>
   );
 }
   export default CourseDetails;

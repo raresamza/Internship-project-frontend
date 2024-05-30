@@ -22,9 +22,6 @@ const Login = () => {
     }
 
 
-    
-
-
     return (
         <>
             <Navbar></Navbar>

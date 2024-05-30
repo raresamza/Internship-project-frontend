@@ -6,8 +6,8 @@ const coursesData = [
     id: 1,
     name: 'Mathematics',
     grades: [
-      { subject: 'Algebra', grade: 'A' },
-      { subject: 'Calculus', grade: 'B' },
+      { subject: 'Algebra', grade: '7' },
+      { subject: 'Calculus', grade: '9' },
     ],
     gpas: [
       { semester: 'Fall 2023', gpa: '3.8' },
@@ -22,8 +22,8 @@ const coursesData = [
     id: 2,
     name: 'Mathematics',
     grades: [
-      { subject: 'Algebra', grade: 'A' },
-      { subject: 'Calculus', grade: 'B' },
+      { subject: 'Algebra', grade: '10' },
+      { subject: 'Calculus', grade: '8' },
     ],
     gpas: [
       { semester: 'Fall 2023', gpa: '3.8' },

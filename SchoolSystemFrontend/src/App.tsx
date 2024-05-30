@@ -9,6 +9,7 @@ import CatalogueTab from './components/CatalogueTab'
 import CoursesTab from './components/CoursesTab'
 import CourseDetails from './components/CourseDetails'
 import Homepage from './components/Homepage'
+import TeacherDetail from './components/TeacherDetail'
 function App() {
 
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/courses/:courseId" element={<CourseDetails />} />
           <Route path='/home' element={<Homepage/>}/>
           <Route path='/' element={<Homepage/>}/>
+          <Route path="/teacher/:id" element={<TeacherDetail />} />
           {/* <Route path='/sign-up/teacher' element={<Register />}></Route>
           <Route path='/sign-up/student' element={<RegisterStudent />}></Route>
           <Route path='/problem' element={<ProblemView />}></Route>
