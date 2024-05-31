@@ -5,19 +5,30 @@ import { faChalkboardUser } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 
 interface TeacherProps {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
   index: number;
+  id: number;
+  name: string;
+  subject:number;
+  age: number;
+  address: string;
+  phoneNumber: number;
+  taughtCourse: {
+    id: number;
+    name: string;
+    studentCourses: {
+      studentId: number;
+      courseId: number;
+    }[];
+  };
 }
 
-const Teacher: React.FC<TeacherProps> = ({ id, firstName, lastName, email, index }) => {
+const Teacher: React.FC<TeacherProps> = ({ id, name,  phoneNumber, index }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/teacher/${id}`);
   };
+  
 
   return (
     <motion.tr
@@ -33,9 +44,9 @@ const Teacher: React.FC<TeacherProps> = ({ id, firstName, lastName, email, index
             <FontAwesomeIcon className='rounded-full bg-slate-300 p-6 w-10 h-10' icon={faChalkboardUser} />
           </div>
           <div className='ml-4 flex-1'>
-            <div className='text-2xl font-semibold'>{firstName} {lastName}</div>
+            <div className='text-2xl font-semibold'>{name}</div>
           </div>
-          <div className='ml-4 pr-2 font-semibold text-2xl whitespace-nowrap'>{email}</div>
+          <div className='ml-4 pr-2 font-semibold text-2xl whitespace-nowrap'>{phoneNumber}</div>
         </div>
       </td>
     </motion.tr>

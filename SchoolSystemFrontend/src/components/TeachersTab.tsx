@@ -1,27 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Teacher from './Teacher';
+import { getTeachers } from '../api/TeacherService';
+
+export interface Teacher {
+  id: number;
+  name: string;
+  age: number;
+  subject: number;
+  address: string;
+  phoneNumber: number;
+  taughtCourse: {
+    id: number;
+    name: string;
+    studentCourses: {
+      studentId: number;
+      courseId: number;
+    }[];
+  };
+}
+
+
 
 const TeachersTab = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
 
-  interface Teacher {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-  }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setTeachers([
-        { id: 1, firstName: 'Rares', lastName: 'Amza', email: 'raresamza@gmail.com' },
-        { id: 2, firstName: 'John', lastName: 'Doe', email: 'johndoe@gmail.com' },
-        { id: 3, firstName: 'Jane', lastName: 'Smith', email: 'janesmith@gmail.com' }
-      ]);
-      setLoading(false);
-    }, 1000);
+    useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const fetchedTeachers = await getTeachers();
+        console.log(fetchedTeachers)
+        setTeachers(fetchedTeachers);
+        setLoading(false); // Set loading to false after fetching
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+      }
+    };
+
+    fetchTeachers();
   }, []);
 
   return (
@@ -36,11 +54,13 @@ const TeachersTab = () => {
                 <Teacher
                   key={teacher.id}
                   id={teacher.id}
-                  firstName={teacher.firstName}
-                  lastName={teacher.lastName}
-                  email={teacher.email}
+                  name={teacher.name}
+                  phoneNumber={teacher.phoneNumber}
                   index={index}
-                />
+                  age={teacher.age}
+                  address={teacher.address}
+                  taughtCourse={teacher.taughtCourse} 
+                  subject={teacher.subject}/>
               ))}
             </tbody>
           )}
