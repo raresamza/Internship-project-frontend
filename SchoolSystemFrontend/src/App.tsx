@@ -10,6 +10,7 @@ import CoursesTab from './components/CoursesTab'
 import CourseDetails from './components/CourseDetails'
 import Homepage from './components/Homepage'
 import TeacherDetail from './components/TeacherDetail'
+import Register from './components/Register'
 function App() {
 
   return (
@@ -17,6 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/sign-in' element={<Login />}></Route>
+          <Route path='/sign-up' element={<Register />}></Route>
           <Route path='/students-tab' element={<StudentsTab />}></Route>
           <Route path='/teachers-tab' element={<TeachersTab />}></Route>
           <Route path='/user-profile' element={<UserProfile />}></Route>
