@@ -37,7 +37,7 @@ const Register = () => {
     parentName: Yup.string().required('Parent Name is required').matches(/^[a-zA-Z\s]+$/, 'Only letters are allowed'),
     phoneNumber: Yup.string().min(10, 'Phone numbers are required to be 10 digits').max(10, 'Phone numbers are required to be 10 digits').required('Phone number is required').matches(/^[0-9]+$/, 'Only numbers are allowed'),
     address: Yup.string().required('Address is required'),
-    password: Yup.string().required('Password is required').min(4, 'Password must be at least 4 characters long'),
+    password: Yup.string().required('Password is required').min(5, 'Password must be at least 5 characters long'),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
       .required('Confirm Password is required'),
