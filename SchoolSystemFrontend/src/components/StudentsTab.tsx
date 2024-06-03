@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Student from './Student';
 import SearchBar from './Seachbar';
+import { Loader2 } from 'lucide-react'
 import { getUsers } from '../api/StudentService';
 import { motion } from 'framer-motion';
 
@@ -78,6 +79,13 @@ const StudentsTab: React.FC = () => {
     });
     setFilteredStudents(filtered);
   };
+
+
+  if(loading) {
+    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+    <Loader2 className='animate-spin text-muted-foreground' size={48} />
+  </div>
+  }
 
   return (
     <>

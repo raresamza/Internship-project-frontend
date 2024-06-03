@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader } from '../@/components/ui/card';
 import { getTeacherById } from '../api/TeacherService';
-import { Collapsible,CollapsibleTrigger,CollapsibleContent } from '../@/components/ui/collapsible';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '../@/components/ui/collapsible';
+import { Loader2 } from 'lucide-react';
 
 interface Teacher {
   id: number;
@@ -48,7 +49,10 @@ const TeacherDetail: React.FC = () => {
 
 
   if (!teacher) {
-    return <div>Loading...</div>;
+    return  <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+    <Loader2 className='animate-spin text-muted-foreground' size={48} />
+  </div>
+
   }
 
   return (

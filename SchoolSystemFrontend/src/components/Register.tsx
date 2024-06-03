@@ -90,7 +90,6 @@ const Register = () => {
             </motion.div>
             <ErrorMessage name="name" component={motion.div} className="text-red-500" />
 
-            {/* Repeat similar animations for other form fields */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -110,7 +109,6 @@ const Register = () => {
             </motion.div>
             <ErrorMessage name="age" component={motion.div} className="text-red-500" />
 
-            {/* Animation for Parent Email label and field */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -130,7 +128,6 @@ const Register = () => {
             </motion.div>
             <ErrorMessage name="parentEmail" component={motion.div} className="text-red-500" />
 
-            {/* Animation for Parent Name label and field */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -150,7 +147,6 @@ const Register = () => {
             </motion.div>
             <ErrorMessage name="parentName" component={motion.div} className="text-red-500" />
 
-            {/* Animation for Phone Number label and field */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -170,7 +166,6 @@ const Register = () => {
             </motion.div>
             <ErrorMessage name="phoneNumber" component={motion.div} className="text-red-500" />
 
-            {/* Animation for Address label and field */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -190,7 +185,6 @@ const Register = () => {
             </motion.div>
             <ErrorMessage name="address" component={motion.div} className="text-red-500" />
 
-            {/* Animation for Password label and field */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -200,23 +194,21 @@ const Register = () => {
               <label htmlFor="password" className="font-semibold text-xl">
                 Password:
               </label>
-              {/* First password field */}
               <div className="protectedInput flex rounded-md hover:shadow-lg border-2 border-black mb-2">
                 <Field
-                  type={showPassword1 ? 'text' : 'password'} // Show password if showPassword1 is true
+                  type={showPassword1 ? 'text' : 'password'} 
                   name="password"
                   id="password"
                   placeholder="**************"
                   className="bg-transparent w-full rounded-tl-md rounded-bl-md px-2 focus:outline-none focus:shadow-md"
                 />
                 <button type="button" className="bg-gray-100 px-4 py-2 rounded-tr-md rounded-br-md" onClick={togglePasswordVisibility1}>
-                  <FontAwesomeIcon icon={showPassword1 ? faEye : faEyeSlash} /> {/* Change icon based on showPassword1 state */}
+                  <FontAwesomeIcon icon={showPassword1 ? faEye : faEyeSlash} /> 
                 </button>
               </div>
             </motion.div>
             <ErrorMessage name="password" component={motion.div} className="text-red-500" />
 
-            {/* Animation for Confirm Password label and field */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -228,20 +220,19 @@ const Register = () => {
               </label>
               <div className="protectedInput flex rounded-md hover:shadow-lg border-2 border-black mb-2">
                 <Field
-                  type={showPassword2 ? 'text' : 'password'} // Show password if showPassword2 is true
+                  type={showPassword2 ? 'text' : 'password'} 
                   name="confirmPassword"
                   id="confirmPassword"
                   placeholder="**************"
                   className="bg-transparent w-full rounded-tl-md rounded-bl-md px-2 focus:outline-none focus:shadow-md"
                 />
                 <button type="button" className="bg-gray-100 px-4 py-2 rounded-tr-md rounded-br-md" onClick={togglePasswordVisibility2}>
-                  <FontAwesomeIcon icon={showPassword2 ? faEye : faEyeSlash} /> {/* Change icon based on showPassword2 state */}
+                  <FontAwesomeIcon icon={showPassword2 ? faEye : faEyeSlash} /> 
                 </button>
               </div>
             </motion.div>
             <ErrorMessage name="confirmPassword" component={motion.div} className="text-red-500" />
 
-            {/* Animation for Submit Button */}
             <motion.button
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}

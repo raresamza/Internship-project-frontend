@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Teacher from './Teacher';
 import { getTeachers } from '../api/TeacherService';
+import { Loader2 } from 'lucide-react';
 
 export interface Teacher {
   id: number;
@@ -41,6 +42,13 @@ const TeachersTab = () => {
 
     fetchTeachers();
   }, []);
+
+
+  if(loading) {
+    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+    <Loader2 className='animate-spin text-muted-foreground' size={48} />
+  </div>
+  }
 
   return (
     <>

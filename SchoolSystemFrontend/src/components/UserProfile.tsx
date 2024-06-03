@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 
 
@@ -43,6 +44,12 @@ const UserProfile = () => {
     //     })
 
     //   }
+
+    if (laoding) {
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+        <Loader2 className='animate-spin text-muted-foreground' size={48} />
+      </div>
+    }
 
     return (
         <>

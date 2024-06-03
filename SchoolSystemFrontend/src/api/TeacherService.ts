@@ -31,8 +31,6 @@ export async function getTeachers(pageNumber: number = 1, pageSize: number = 10)
 }
 
 export async function getTeacherById(id:number):Promise<Teacher> {
-  console.log(id)
-  console.log(`${API_URL}/${id}`)
   const response = await axios.get<Teacher>(`${API_URL}/${id}`);
     return response.data;
 }
