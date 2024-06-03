@@ -5,9 +5,13 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { register } from '../api/AuthService';
+import useAuth from '../hooks/useAuth';
 
 const Register = () => {
 
+  const  decodedToken  = useAuth();
+  console.log(decodedToken)
 
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
@@ -54,8 +58,9 @@ const Register = () => {
           confirmPassword: '',
         }}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           console.log('Form submitted');
+          await register(values);
           console.log(values);
         }}
       >

@@ -3,10 +3,17 @@ import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import { motion } from 'framer-motion';
+import { login } from '../api/AuthService';
+import useAuth from '../hooks/useAuth';
 
 const Login = () => {
 
-  // Define the validation schema using Yup
+
+
+  const  decodedToken  = useAuth();
+  console.log(decodedToken)
+
+
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email address').required('Email is required'),
     password: Yup.string().min(4, "Password needs to be at least 4 characters long").required('Password is required'),
@@ -26,9 +33,10 @@ const Login = () => {
             password: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
+          onSubmit={async (values) => {
             console.log("Form submitted");
-            console.log(values);
+            await login(values.email,values.password)
+            
           }}
         >
           {(formik) => (
