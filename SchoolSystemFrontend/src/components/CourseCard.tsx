@@ -2,6 +2,7 @@ import { Loader2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardContent } from '../@/components/ui/card';
+import { getSubjectName } from '../utils/utils';
 
 interface Course {
     id: number;
@@ -43,7 +44,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
             <h2 className='text-lg font-bold'>{course.name}</h2>
           </CardHeader>
           <CardContent className='font-semibold'>
-            <p>Subject: {course.subject}</p>
+            <p>Subject: {getSubjectName(course.subject)}</p>
             {course.teacherId ? <p>Teacher ID: {course.teacherId}</p>:<p>Teacher not assigned yet...</p>}
           </CardContent>
         </Card>

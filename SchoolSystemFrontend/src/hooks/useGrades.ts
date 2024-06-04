@@ -1,13 +1,9 @@
-import { jwtDecode } from "jwt-decode";
-import { useState, useEffect, SetStateAction } from "react";
-import { extractRelevantFields } from "../utils/utils";
-import useAuth, { MyJwtPayload } from "./useAuth";
+import { useState, useEffect } from "react";
 import { Grade, Student, getUsers } from "../api/StudentService";
 
 const useGrades = () => {
     const [pageNumber, setPageNumber] = useState(1); // Track current page number
     const [pageSize] = useState(5); // Page size
-    const [loading, setLoading] = useState(true);
     const [students, setStudents] = useState<Student[]>([]);
 
     useEffect(() => {

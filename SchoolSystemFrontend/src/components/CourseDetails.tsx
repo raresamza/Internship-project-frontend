@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardHeader, CardContent, CardFooter } from '../@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../@/components/ui/select';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Course, getCourseById } from '../api/CourseService';
 import Navbar from './Navbar';
 import { Loader2 } from 'lucide-react';
-import { getSubjectName, subjectMapping } from '../utils/utils';
-
-
-// interface Course {
-//   id: number;
-//   name: string;
-//   subject: string;
-//   teacherId?: string;
-//   teacherName?: string;
-//   studentCourses?: StudentCourse[];
-// }
+import { getSubjectName } from '../utils/utils';
 
 const CourseDetails = () => {
-
   const { courseId } = useParams<{ courseId: string }>();
 
   const [course, setCourse] = useState<Course | null>(null);
@@ -58,7 +47,7 @@ const CourseDetails = () => {
           transition={{ type: 'spring', stiffness: 200, damping: 20 }}
         >
           <Card className="w-full max-w-5xl mx-auto shadow-lg border border-gray-200 rounded-lg">
-            <CardHeader className="bg-blue-500 text-white p-6 rounded-t-lg">
+            <CardHeader className="bg-blue-500 text-white  p-6 rounded-t-lg">
               <motion.h1
                 className="text-3xl font-bold"
                 initial={{ y: -20, opacity: 0 }}
@@ -83,7 +72,7 @@ const CourseDetails = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
               >
-                <p className="text-lg font-medium">Teacher ID: <span className="font-normal">{course.teacherId}</span></p>
+                <p className="text-lg font-medium">Teacher ID: <span className="font-normal">{course.teacherId || "Not assigned yet"}</span></p>
               </motion.div>
               <motion.div
                 className="mb-4"
@@ -91,7 +80,7 @@ const CourseDetails = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
               >
-                <p className="text-lg font-medium">Teacher Info: <span className="font-normal">{course.teacherName}</span></p>
+                <p className="text-lg font-medium">Teacher Info: <span className="font-normal">{course.teacherName || "Not assigned yet"}</span></p>
               </motion.div>
             </CardContent>
             <CardFooter className="bg-gray-100 p-6 rounded-b-lg">
@@ -143,5 +132,6 @@ const CourseDetails = () => {
       )}
     </>
   );
-}
+};
+
 export default CourseDetails;

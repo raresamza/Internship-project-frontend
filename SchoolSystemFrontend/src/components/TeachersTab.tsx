@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Teacher from './Teacher';
 import { getTeachers } from '../api/TeacherService';
@@ -32,7 +32,6 @@ const TeachersTab = () => {
     const fetchTeachers = async () => {
       try {
         const fetchedTeachers = await getTeachers();
-        console.log(fetchedTeachers)
         setTeachers(fetchedTeachers);
         setLoading(false); // Set loading to false after fetching
       } catch (error) {
