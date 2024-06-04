@@ -16,19 +16,19 @@ export interface Student {
     absences: Absence[];
   }
   
-  interface Grade {
+export interface Grade {
     courseId: number;
     courseName: string;
     gradeValues: number[];
   }
   
-  interface Gpa {
+export  interface Gpa {
     courseId: number;
     courseName: string;
     gpaValue: number;
   }
   
-  interface Absence {
+export interface Absence {
     id: number;
     date: string;
     courseName: string;
@@ -41,6 +41,6 @@ export interface Student {
         pageSize,
       },
     });
-    console.log(response.data.items)
+    // console.log(response.data.items)
     return response.data.items;
   }

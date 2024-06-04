@@ -1,47 +1,41 @@
+import { useEffect, useState } from "react";
 import Catalogue from "./Catalogue";
 import Navbar from "./Navbar";
+import { Course, getCourses } from "../api/CourseService";
+import { Student, getUsers } from "../api/StudentService";
 
-const coursesData = [
-  {
-    id: 1,
-    name: 'Mathematics',
-    grades: [
-      { subject: 'Algebra', grade: '7' },
-      { subject: 'Calculus', grade: '9' },
-    ],
-    gpas: [
-      { semester: 'Fall 2023', gpa: '3.8' },
-      { semester: 'Spring 2024', gpa: '3.9' },
-    ],
-    absences: [
-      { date: '2023-09-15', count: 2 },
-      { date: '2023-09-20', count: 1 },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Mathematics',
-    grades: [
-      { subject: 'Algebra', grade: '10' },
-      { subject: 'Calculus', grade: '8' },
-    ],
-    gpas: [
-      { semester: 'Fall 2023', gpa: '3.8' },
-      { semester: 'Spring 2024', gpa: '3.9' },
-    ],
-    absences: [
-      { date: '2023-09-15', count: 2 },
-      { date: '2023-09-20', count: 1 },
-    ],
-  },
-  // Add more courses data as needed
-];
+
 
 const CatalogueTab = () => {
+
+
+  const [loading, setLoading] = useState(true);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [pageNumber, setPageNumber] = useState(1); // Track current page number
+  const [pageSize] = useState(5); // Page size
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const fetchedStudents = await getUsers(pageNumber, pageSize);
+        // console.log(fetchedStudents)
+        // console.log("fetched above")
+        setStudents(fetchedStudents);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStudents();
+  }, [pageNumber]);
+
+
   return (
     <div>
         <Navbar/>
-      <Catalogue courses={coursesData} /> {/* Render the Catalogue component with courses data */}
+      <Catalogue students={students} /> {/* Render the Catalogue component with courses data */}
     </div>
   );
 };
