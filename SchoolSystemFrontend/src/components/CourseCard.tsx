@@ -1,5 +1,5 @@
 import { Loader2 } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardContent } from '../@/components/ui/card';
 import { getSubjectName } from '../utils/utils';
@@ -19,15 +19,11 @@ interface StudentCourse{
 }
 
 
-
-
 interface CourseCardProps {
     course: Course;
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
-
-
 
     const navigate = useNavigate();
 
