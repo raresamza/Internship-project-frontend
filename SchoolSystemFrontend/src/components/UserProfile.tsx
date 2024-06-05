@@ -15,15 +15,10 @@ const UserProfile = () => {
 
 
 
-  const [laoding, setLaoding] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   const decoded = useAuth();
 
-  if (laoding) {
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
-      <Loader2 className='animate-spin text-muted-foreground' size={48} />
-    </div>
-  }
 
   return (
     <>

@@ -81,10 +81,12 @@ const StudentsTab: React.FC = () => {
   };
 
 
-  if(loading) {
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
-    <Loader2 className='animate-spin text-muted-foreground' size={48} />
-  </div>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+        <Loader2 className='animate-spin text-muted-foreground' size={48} />
+      </div>
+    );
   }
 
   return (

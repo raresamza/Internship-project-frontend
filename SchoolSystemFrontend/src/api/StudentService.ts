@@ -15,6 +15,12 @@ export interface Student {
     gpAs: Gpa[];
     absences: Absence[];
   }
+
+  export interface AbsenceParams {
+    date: string,
+    studentId: number,
+    courseId: number
+  }
   
 export interface Grade {
     courseId: number;
@@ -43,4 +49,11 @@ export interface Absence {
     });
     // console.log(response.data.items)
     return response.data.items;
+  }
+
+  export async function addAbsence(vals:AbsenceParams) {
+    
+  }
+  export async function removeAbsence(vals:AbsenceParams) {
+    
   }

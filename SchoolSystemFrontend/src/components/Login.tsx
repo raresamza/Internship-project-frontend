@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { motion } from 'framer-motion';
 import { login } from '../api/AuthService';
@@ -9,8 +9,10 @@ import useAuth from '../hooks/useAuth';
 const Login = () => {
 
 
+  const nav = useNavigate()
 
-  const  decodedToken  = useAuth();
+
+  const decodedToken = useAuth();
   console.log(decodedToken)
 
 
@@ -35,8 +37,7 @@ const Login = () => {
           validationSchema={validationSchema}
           onSubmit={async (values) => {
             console.log("Form submitted");
-            await login(values.email,values.password)
-            
+            await login(values.email, values.password).then(() => nav('/sign-in'))
           }}
         >
           {(formik) => (
