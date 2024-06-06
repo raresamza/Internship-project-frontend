@@ -15,12 +15,6 @@ export interface Student {
     gpAs: Gpa[];
     absences: Absence[];
   }
-
-  export interface AbsenceParams {
-    date: string,
-    studentId: number,
-    courseId: number
-  }
   
 export interface Grade {
     courseId: number;
@@ -39,6 +33,25 @@ export interface Absence {
     date: string;
     courseName: string;
   }
+
+  export interface AbsenceParams {
+    date: string;
+    studentId: number;
+    absenceId: number; // Corrected to use absenceId instead of courseId
+  }
+  
+  export interface DeleteAbsenceParams {
+    studentId:number,
+    absenceId:number,
+    courseId:number,
+  }
+
+  export interface DeleteAbsenceParams {
+    studentId: number;
+    absenceId: number;
+    courseId: number;
+  }
+  
   
   export async function getUsers(pageNumber: number = 1, pageSize: number = 10): Promise<Student[]> {
     const response = await axios.get<{ items: Student[] }>(API_URL, {
@@ -51,9 +64,44 @@ export interface Absence {
     return response.data.items;
   }
 
-  export async function addAbsence(vals:AbsenceParams) {
-    
+  // Function to add an absence to a student
+  export async function addAbsence(params: AbsenceParams): Promise<void> {
+    try {
+      const response = await axios.post(`${API_URL}/absence`, null, {
+        params: {
+          studentId: params.studentId,
+          absenceId: params.absenceId, // Corrected to use absenceId
+        },
+      });
+      console.log('Absence added successfully:', response.data);
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 404) {
+        throw new Error('AbsenceNotFound');
+      }
+      console.error('Error adding absence:', error);
+      throw error;
+    }
   }
-  export async function removeAbsence(vals:AbsenceParams) {
-    
+  
+  
+
+  
+  export async function removeAbsence(params: DeleteAbsenceParams): Promise<void> {
+    try {
+      const response = await axios.delete(`${API_URL}/removeAbsence`, {
+        params: {
+          studentId: params.studentId,
+          absenceId: params.absenceId,
+          courseId: params.courseId,
+        },
+      });
+      console.log('Absence removed successfully:', response.data);
+    } catch (error) {
+      console.error('Error removing absence:', error);
+      throw error;
+    }
+  }
+
+  function isAxiosError(error: unknown): error is import('axios').AxiosError {
+    return (error as import('axios').AxiosError).isAxiosError !== undefined;
   }

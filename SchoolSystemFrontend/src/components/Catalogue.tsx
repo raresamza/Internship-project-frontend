@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../@/compo
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "../@/components/ui/collapsible";
 import { Grade, Student } from '../api/StudentService';
 import useGrades from '../hooks/useGrades';
-import { Toaster } from 'sonner';
+import { Toaster, toast } from 'sonner';
 import AbsencesSection from './AbsencesSection';
 import AddAbsenceDialog from './AddAbsenceDialog';
 import AddGradeDialog from './AddGradeDialog';
@@ -13,7 +13,6 @@ import DeleteGradeDialog from './DeleteGradeDialog';
 import GpaSection from './GpaSection';
 import GradesSection from './GradesSection';
 import StudentSelector from './StudentSelector';
-import {toast} from 'sonner'
 
 interface CatalogueProps {
   students: Student[];
@@ -33,6 +32,8 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
   const [selectedGradeToDelete, setSelectedGradeToDelete] = useState<string | null>(null);
   const [newAbsenceDate, setNewAbsenceDate] = useState<string>('');
   const [selectedAbsenceToDelete, setSelectedAbsenceToDelete] = useState<string | null>(null);
+  const [closeReason, setCloseReason] = useState<'success' | 'user' | null>(null);
+
 
   const uniqueGrades: Grade[] = [];
   grades.forEach((gradeArray) => {
@@ -48,6 +49,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
   };
 
   const handleDialogOpen = (dialogType: string, courseId: number) => {
+    setCloseReason(null); // Reset close reason
     setCurrentCourseId(courseId);
     if (dialogType === 'addGrade') {
       setIsAddDialogOpen(true);
@@ -60,17 +62,21 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
     }
   };
 
+
   const handleDialogClose = () => {
-    toast('Operation aborted ⚠️', {
-      style: {
-        backgroundColor: 'red',
-        color: 'white',
-      },
-    });
+    if (closeReason === 'user') {
+      toast('Operation aborted ⚠️', {
+        style: {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+      });
+    }
     setIsAddDialogOpen(false);
     setIsDeleteDialogOpen(false);
     setIsAddAbsenceDialogOpen(false);
     setIsDeleteAbsenceDialogOpen(false);
+    setCloseReason(null); // Reset the close reason
   };
 
   const selectedStudentDetails = selectedStudentId !== null
@@ -84,7 +90,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
 
   return (
     <div className="mx-4 p-8">
-      <Toaster/>
+      <Toaster />
       <h1 className="text-4xl font-bold mb-8">Catalogue</h1>
       <div className="space-y-8">
         {uniqueGrades.map((grade, index) => (
@@ -154,6 +160,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
         refreshStudents={refreshStudents}
         newGrade={newGrade}
         setNewGrade={setNewGrade}
+        setCloseReason={setCloseReason} // Pass the new prop
       />
       <DeleteGradeDialog
         isOpen={isDeleteDialogOpen}
@@ -165,6 +172,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
         selectedGradeToDelete={selectedGradeToDelete}
         setSelectedGradeToDelete={setSelectedGradeToDelete}
         selectedStudentDetails={selectedStudentDetails}
+        setCloseReason={setCloseReason} // Pass the new prop
       />
       <AddAbsenceDialog
         isOpen={isAddAbsenceDialogOpen}
@@ -175,6 +183,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
         refreshStudents={refreshStudents}
         newAbsenceDate={newAbsenceDate}
         setNewAbsenceDate={setNewAbsenceDate}
+        setCloseReason={setCloseReason} // Pass the new prop
       />
       <DeleteAbsenceDialog
         isOpen={isDeleteAbsenceDialogOpen}
@@ -187,6 +196,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
         setSelectedAbsenceToDelete={setSelectedAbsenceToDelete}
         selectedStudentDetails={selectedStudentDetails}
         formatDate={formatDate}
+        setCloseReason={setCloseReason} // Pass the new prop
       />
     </div>
   );

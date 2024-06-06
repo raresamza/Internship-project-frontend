@@ -32,7 +32,7 @@ const GradesSection: React.FC<GradesSectionProps> = ({ selectedStudentDetails, g
       </div>
       <div className="flex space-x-2">
         <motion.button
-          className="bg-indigo-500 hover:bg-indigo-600 text-white rounded-full p-2"
+          className="bg-indigo-400 hover:bg-indigo-500 text-white rounded-full p-2"
           style={{ width: '2.5rem', height: '2.5rem' }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -41,7 +41,7 @@ const GradesSection: React.FC<GradesSectionProps> = ({ selectedStudentDetails, g
           <FontAwesomeIcon icon={faSquarePlus} />
         </motion.button>
         <motion.button
-          className="bg-red-500 hover:bg-red-600 text-white rounded-full p-2"
+          className="bg-red-400 hover:bg-red-500 text-white rounded-full p-2"
           style={{ width: '2.5rem', height: '2.5rem' }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}

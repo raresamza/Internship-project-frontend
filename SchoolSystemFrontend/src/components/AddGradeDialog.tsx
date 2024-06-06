@@ -12,6 +12,7 @@ interface AddGradeDialogProps {
   refreshStudents: () => void;
   newGrade: string;
   setNewGrade: React.Dispatch<React.SetStateAction<string>>;
+  setCloseReason: React.Dispatch<React.SetStateAction<'success' | 'user' | null>>; // New prop
 }
 
 const AddGradeDialog: React.FC<AddGradeDialogProps> = ({
@@ -23,6 +24,7 @@ const AddGradeDialog: React.FC<AddGradeDialogProps> = ({
   refreshStudents,
   newGrade,
   setNewGrade,
+  setCloseReason
 }) => {
   const handleGradeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -39,6 +41,8 @@ const AddGradeDialog: React.FC<AddGradeDialogProps> = ({
         courseId: currentCourseId,
       };
       await addGrade(params);
+      setCloseReason("success")
+
       toast.success('Grade successfully added 🎉', {
         style: {
           backgroundColor: 'green',

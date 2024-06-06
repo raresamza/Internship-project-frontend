@@ -15,6 +15,7 @@ interface DeleteGradeDialogProps {
   selectedGradeToDelete: string | null;
   setSelectedGradeToDelete: React.Dispatch<React.SetStateAction<string | null>>;
   selectedStudentDetails: Student | null | undefined;
+  setCloseReason: React.Dispatch<React.SetStateAction<'success' | 'user' | null>>; // New prop
 }
 
 const DeleteGradeDialog: React.FC<DeleteGradeDialogProps> = ({
@@ -27,6 +28,7 @@ const DeleteGradeDialog: React.FC<DeleteGradeDialogProps> = ({
   selectedGradeToDelete,
   setSelectedGradeToDelete,
   selectedStudentDetails,
+  setCloseReason
 }) => {
   const handleGradeDelete = async () => {
     if (selectedGradeToDelete && selectedStudentId !== null && currentCourseId !== null) {
@@ -36,6 +38,7 @@ const DeleteGradeDialog: React.FC<DeleteGradeDialogProps> = ({
         courseId: currentCourseId,
       };
       await removeGrade(params);
+      setCloseReason('success');
       toast.success('Grade successfully removed 🎉', {
         style: {
           backgroundColor: 'green',

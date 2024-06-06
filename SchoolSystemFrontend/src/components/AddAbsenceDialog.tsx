@@ -1,7 +1,10 @@
 import React from 'react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../@/components/ui/dialog';
 import { toast } from 'sonner';
+// import { AbsenceParams, addAbsence, createAbsence } from '../api/CourseService';
 import { AbsenceParams, addAbsence } from '../api/StudentService';
+import { createAbsence } from '../api/Absence';
+
 
 interface AddAbsenceDialogProps {
   isOpen: boolean;
@@ -12,6 +15,7 @@ interface AddAbsenceDialogProps {
   refreshStudents: () => void;
   newAbsenceDate: string;
   setNewAbsenceDate: React.Dispatch<React.SetStateAction<string>>;
+  setCloseReason: React.Dispatch<React.SetStateAction<'success' | 'user' | null>>; // New prop
 }
 
 const AddAbsenceDialog: React.FC<AddAbsenceDialogProps> = ({
@@ -23,6 +27,7 @@ const AddAbsenceDialog: React.FC<AddAbsenceDialogProps> = ({
   refreshStudents,
   newAbsenceDate,
   setNewAbsenceDate,
+  setCloseReason
 }) => {
   const handleAbsenceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewAbsenceDate(e.target.value);
@@ -30,22 +35,53 @@ const AddAbsenceDialog: React.FC<AddAbsenceDialogProps> = ({
 
   const handleAbsenceSubmit = async () => {
     if (newAbsenceDate && selectedStudentId !== null && currentCourseId !== null) {
-      const params: AbsenceParams = {
-        date: newAbsenceDate,
-        studentId: selectedStudentId,
-        courseId: currentCourseId,
-      };
-      await addAbsence(params);
-      toast.success('Absence successfully added 🎉', {
+      try {
+        const absenceId = await createAbsence(newAbsenceDate, currentCourseId);
+        const params: AbsenceParams = {
+          date: newAbsenceDate,
+          studentId: selectedStudentId,
+          absenceId, // Use the correct absenceId
+        };
+        await addAbsence(params);
+        setCloseReason("success")
+        toast.success('Absence successfully created and added 🎉', {
+          style: {
+            backgroundColor: 'green',
+            color: 'white',
+          },
+        });
+        handleDialogClose();
+        refreshStudents(); // Refresh the student data after creating and adding the absence
+      } catch (error) {
+        handleAxiosError(error, 'Failed to create and add absence');
+      }
+    }
+  };
+
+  // Type guard to check if error is an AxiosError
+  function isAxiosError(error: unknown): error is import('axios').AxiosError {
+    return (error as import('axios').AxiosError).isAxiosError !== undefined;
+  }
+
+  // Error handling function
+  function handleAxiosError(error: unknown, defaultMessage: string) {
+    if (isAxiosError(error)) {
+      toast.error(`${defaultMessage}: ${error.message}`, {
         style: {
-          backgroundColor: 'green',
+          backgroundColor: 'red',
           color: 'white',
         },
       });
-      handleDialogClose();
-      refreshStudents(); // Refresh the student data after adding the absence
+    } else {
+      toast.error(defaultMessage, {
+        style: {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+      });
     }
-  };
+    console.error(defaultMessage, error);
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
