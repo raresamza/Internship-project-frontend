@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Catalogue from "./Catalogue";
 import Navbar from "./Navbar";
-import { getUsers, Student } from "../api/StudentService";
+import { getAllStudents, getUsers, Student } from "../api/StudentService";
 
 const CatalogueTab = () => {
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ const CatalogueTab = () => {
 
   const fetchStudents = async () => {
     try {
-      const fetchedStudents = await getUsers(pageNumber, pageSize);
+      const fetchedStudents = await getAllStudents();
       setStudents(fetchedStudents);
     } catch (error) {
       console.error('Error fetching students:', error);
@@ -27,7 +27,7 @@ const CatalogueTab = () => {
   return (
     <div>
       <Navbar />
-      <Catalogue students={students} refreshStudents={fetchStudents} /> {/* Pass the refresh method */}
+      <Catalogue students={students} refreshStudents={fetchStudents} /> 
     </div>
   );
 };

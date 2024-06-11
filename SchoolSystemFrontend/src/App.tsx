@@ -11,6 +11,7 @@ import CourseDetails from './components/CourseDetails'
 import Homepage from './components/Homepage'
 import TeacherDetail from './components/TeacherDetail'
 import Register from './components/Register'
+import { Toaster } from './@/components/ui/sonner'
 function App() {
 
   return (
@@ -50,7 +51,7 @@ function App() {
         </Routes>
       </BrowserRouter>
 
-
+            <Toaster/>
       {/* <p className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Test tailwindcss</p> */}
     </>
   )

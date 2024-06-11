@@ -34,3 +34,13 @@ export async function getTeacherById(id:number):Promise<Teacher> {
   const response = await axios.get<Teacher>(`${API_URL}/${id}`);
     return response.data;
 }
+export const assignTeacherToCourse = async (courseId: number, teacherId: number): Promise<void> => {
+  const resposne=await axios.put(`${API_URL}/assign`, null, {
+    params: {
+      courseId,
+      teacherId
+    }
+  });
+
+  return resposne.data;
+};

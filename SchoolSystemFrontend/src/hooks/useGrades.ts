@@ -3,7 +3,7 @@ import { Grade, Student, getUsers } from "../api/StudentService";
 
 const useGrades = () => {
     const [pageNumber, setPageNumber] = useState(1); // Track current page number
-    const [pageSize] = useState(5); // Page size
+    const [pageSize] = useState(100); // Page size
     const [students, setStudents] = useState<Student[]>([]);
 
     useEffect(() => {
@@ -26,6 +26,8 @@ const useGrades = () => {
     })
     return tmp
 
-
 };
+
+
+
 export default useGrades;

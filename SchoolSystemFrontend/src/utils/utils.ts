@@ -1,4 +1,3 @@
-import jwt_decode from 'jwt-decode';
 import { MyJwtPayload } from '../hooks/useAuth';
 
 export const subjectMapping: { [key: string]: string } = {
@@ -12,6 +11,10 @@ export const subjectMapping: { [key: string]: string } = {
 export function getSubjectName(subjectId: string): string {
   return subjectMapping[subjectId] || 'Unknown Subject';
 };
+
+export function getSubjectId(subjectName: string): string | undefined {
+  return Object.keys(subjectMapping).find(key => subjectMapping[key] === subjectName);
+}
 
 export const extractRelevantFields = (decodedToken: any): MyJwtPayload => {
   return {

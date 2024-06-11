@@ -34,7 +34,6 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
   const [selectedAbsenceToDelete, setSelectedAbsenceToDelete] = useState<string | null>(null);
   const [closeReason, setCloseReason] = useState<'success' | 'user' | null>(null);
 
-
   const uniqueGrades: Grade[] = [];
   grades.forEach((gradeArray) => {
     gradeArray.forEach((grade) => {
@@ -61,7 +60,6 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
       setIsDeleteAbsenceDialogOpen(true);
     }
   };
-
 
   const handleDialogClose = () => {
     if (closeReason === 'user') {
@@ -132,7 +130,11 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
                           grade={grade}
                           handleDialogOpen={handleDialogOpen}
                         />
-                        <GpaSection selectedStudentDetails={selectedStudentDetails} grade={grade} />
+                        <GpaSection
+                          selectedStudentDetails={selectedStudentDetails}
+                          gpas={selectedStudentDetails.gpAs} // Pass the GPA data directly
+                          refreshStudents={refreshStudents}
+                        />
                         <AbsencesSection
                           selectedStudentDetails={selectedStudentDetails}
                           grade={grade}

@@ -105,3 +105,10 @@ export interface Absence {
   function isAxiosError(error: unknown): error is import('axios').AxiosError {
     return (error as import('axios').AxiosError).isAxiosError !== undefined;
   }
+
+
+  export const getAllStudents = async (): Promise<Student[]> => {
+    const response = await axios.get(`${API_URL}/all`); // Adjust the URL if needed
+    
+    return response.data;
+  };
