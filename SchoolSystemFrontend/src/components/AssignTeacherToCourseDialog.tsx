@@ -54,7 +54,7 @@ const AssignTeacherDialog: React.FC<AssignTeacherDialogProps> = ({ isOpen, setIs
             }
         );
         setIsOpen(false);
-        refreshTeacher(); // Refresh the teacher data to update assigned courses
+        refreshTeacher(); 
       } catch (error) {
         toast.error('Failed to assign teacher',
             {

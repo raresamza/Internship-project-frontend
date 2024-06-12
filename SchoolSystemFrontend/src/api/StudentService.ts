@@ -15,6 +15,15 @@ export interface Student {
     gpAs: Gpa[];
     absences: Absence[];
   }
+
+  export interface StudentCreationDto {
+    parentName: string;
+  name: string;
+  parentEmail: string;
+  phoneNumber: number;
+  age: number;
+  address: string;
+  }
   
 export interface Grade {
     courseId: number;
@@ -111,4 +120,13 @@ export interface Absence {
     const response = await axios.get(`${API_URL}/all`); // Adjust the URL if needed
     
     return response.data;
+  };
+
+  export const createStudent = async (student: StudentCreationDto): Promise<Student> => {
+    const response = await axios.post(`${API_URL}`, student);
+    return response.data;
+  };
+
+  export const deleteStudent = async (id: number): Promise<void> => {
+    await axios.delete(`${API_URL}/${id}`);
   };

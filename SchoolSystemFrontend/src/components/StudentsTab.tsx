@@ -1,12 +1,12 @@
-// StudentsTab.tsx
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Student from './Student';
 import SearchBar from './Seachbar';
-import { Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react';
 import { getUsers } from '../api/StudentService';
 import { motion } from 'framer-motion';
-
+import AddStudentDialog from './AddStudentDialog';
+import DeleteStudentDialog from './DeleteStudentDialog';
 
 interface Student {
   id: number;
@@ -46,19 +46,19 @@ const StudentsTab: React.FC = () => {
   const [pageNumber, setPageNumber] = useState(1); // Track current page number
   const [pageSize] = useState(5); // Page size
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const fetchedStudents = await getUsers(pageNumber, pageSize);
-        setStudents(fetchedStudents); // Replace existing data with new data
-        setFilteredStudents(fetchedStudents); // Update filtered data as well
-      } catch (error) {
-        console.error('Error fetching students:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchStudents = async () => {
+    try {
+      const fetchedStudents = await getUsers(pageNumber, pageSize);
+      setStudents(fetchedStudents); // Replace existing data with new data
+      setFilteredStudents(fetchedStudents); // Update filtered data as well
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchStudents();
   }, [pageNumber]); // Fetch data whenever page number changes
 
@@ -79,7 +79,6 @@ const StudentsTab: React.FC = () => {
     });
     setFilteredStudents(filtered);
   };
-
 
   if (loading) {
     return (
@@ -106,7 +105,8 @@ const StudentsTab: React.FC = () => {
                   index={index} // Pass index to Student
                   id={student.id}
                   parentName={student.parentName}
-                  age={0} address={student.address}
+                  age={0}
+                  address={student.address}
                   phoneNumber={student.phoneNumber}
                   grades={student.grades}
                   gpAs={student.gpAs}
@@ -116,10 +116,10 @@ const StudentsTab: React.FC = () => {
             </tbody>
           )}
         </table>
-        <div className="flex justify-between mt-4">
+        <div className="fixed bottom-4 left-20 p-4">
           {pageNumber > 1 && (
             <motion.button
-              className='bg-red-500 text-white hover:bg-red-700 rounded-md h-10 px-4 py-2'
+              className='bg-red-500 text-white hover:bg-red-700 rounded-md h-10 px-4 py-2 mr-2'
               onClick={handlePreviousPage}
               initial={{ x: -150, opacity: 0 }} // Initial animation state
               animate={{ x: 0, opacity: 1 }} // Animation when trigger appears
@@ -130,7 +130,7 @@ const StudentsTab: React.FC = () => {
           )}
           {students.length > 0 && students.length % pageSize === 0 && (
             <motion.button
-              className='bg-green-500 text-white hover:bg-green-700 rounded-md h-10 px-4 py-2'
+              className='bg-green-500 text-white hover:bg-green-700 rounded-xl h-10 px-4 py-2'
               onClick={handleLoadMore}
               initial={{ x: -150, opacity: 0 }} // Initial animation state
               animate={{ x: 0, opacity: 1 }} // Animation when trigger appears
@@ -140,9 +140,13 @@ const StudentsTab: React.FC = () => {
             </motion.button>
           )}
         </div>
+        <div className="fixed bottom-4 right-10 p-4 flex space-x-4">
+          <AddStudentDialog refreshStudents={fetchStudents} />
+          <DeleteStudentDialog refreshStudents={fetchStudents} />
+        </div>
       </div>
     </>
   );
-}
+};
 
 export default StudentsTab;

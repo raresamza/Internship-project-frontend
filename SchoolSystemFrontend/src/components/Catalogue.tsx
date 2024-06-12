@@ -115,9 +115,8 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
                       {grade.courseName}
                     </CardTitle>
                     <StudentSelector
-                      students={students}
-                      filteredStudents={students.filter(student =>
-                        student.grades.some(g => uniqueGrades.some(course => course.courseName === g.courseName))
+                      students={students.filter(student => 
+                        student.grades.some(g => g.courseId === grade.courseId)
                       )}
                       handleStudentSelect={handleStudentSelect}
                     />

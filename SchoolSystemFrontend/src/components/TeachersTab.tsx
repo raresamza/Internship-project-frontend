@@ -3,6 +3,8 @@ import Navbar from './Navbar';
 import Teacher from './Teacher';
 import { getTeachers } from '../api/TeacherService';
 import { Loader2 } from 'lucide-react';
+import AddTeacherDialog from './AddTeacherDialog';
+import DeleteTeacherDialog from './DeleteTeacherDialog';
 
 export interface Teacher {
   id: number;
@@ -21,39 +23,40 @@ export interface Teacher {
   };
 }
 
-
-
 const TeachersTab = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
 
+  const fetchTeachers = async () => {
+    try {
+      const fetchedTeachers = await getTeachers();
+      setTeachers(fetchedTeachers);
+      setLoading(false); // Set loading to false after fetching
+    } catch (error) {
+      console.error('Error fetching teachers:', error);
+    }
+  };
 
-    useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        const fetchedTeachers = await getTeachers();
-        setTeachers(fetchedTeachers);
-        setLoading(false); // Set loading to false after fetching
-      } catch (error) {
-        console.error('Error fetching teachers:', error);
-      }
-    };
-
+  useEffect(() => {
     fetchTeachers();
   }, []);
 
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
-        <Loader2 className='animate-spin text-muted-foreground' size={48} />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+  //       <Loader2 className='animate-spin text-muted-foreground' size={48} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
       <Navbar />
+      {loading && (
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+        <Loader2 className='animate-spin text-muted-foreground' size={48} />
+      </div>
+      )}
       <p className='px-20 text-4xl font-bold py-10'>Teachers:</p>
       <div className='px-20 py-6'>
         <table className='border-separate border-spacing-y-6'>
@@ -69,11 +72,16 @@ const TeachersTab = () => {
                   age={teacher.age}
                   address={teacher.address}
                   taughtCourse={teacher.taughtCourse} 
-                  subject={teacher.subject}/>
+                  subject={teacher.subject}
+                />
               ))}
             </tbody>
           )}
         </table>
+        <div className="fixed bottom-4 right-10 p-4 flex space-x-4">
+          <AddTeacherDialog refreshTeachers={fetchTeachers} />
+          <DeleteTeacherDialog refreshTeachers={fetchTeachers} />
+        </div>
       </div>
     </>
   );

@@ -4,19 +4,18 @@ import { Student } from '../api/StudentService';
 
 interface StudentSelectorProps {
   students: Student[];
-  filteredStudents: Student[];
   handleStudentSelect: (value: string) => void;
 }
 
-const StudentSelector: React.FC<StudentSelectorProps> = ({ students, filteredStudents, handleStudentSelect }) => {
+const StudentSelector: React.FC<StudentSelectorProps> = ({ students, handleStudentSelect }) => {
   return (
     <Select onValueChange={handleStudentSelect}>
-      <SelectTrigger className="w-[180px] bg-emerald-600 text-white">
+      <SelectTrigger className="w-[180px] bg-emerald-600 text-white rounded-xl">
         <SelectValue placeholder="Select a student" />
       </SelectTrigger>
-      <SelectContent>
-        {filteredStudents.map(student => (
-          <SelectItem key={student.id} value={student.id.toString()}>
+      <SelectContent className="rounded-xl">
+        {students.map((student) => (
+          <SelectItem key={student.id} value={student.id.toString()} className="bg-white text-black">
             {student.name}
           </SelectItem>
         ))}

@@ -103,7 +103,7 @@ const TeacherDetail: React.FC = () => {
               className="bg-green-500 text-white hover:bg-green-600 rounded-xl p-2 ml-auto whitespace-nowrap"
               onClick={handleAssignClick}
             >
-              Assign Teacher
+              Assign Course
             </button>
           </CardFooter>
         </Card>
