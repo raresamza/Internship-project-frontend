@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardFooter } from '../@/components/ui/card';
 import { getTeacherById } from '../api/TeacherService';
@@ -29,6 +29,7 @@ const TeacherDetail: React.FC = () => {
   const { id } = useParams<Record<string, string>>();
   const [teacher, setTeacher] = useState<Teacher | null>(null);
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
+  const nav = useNavigate()
 
   useEffect(() => {
     const fetchTeacher = async () => {
@@ -36,7 +37,7 @@ const TeacherDetail: React.FC = () => {
         const fetchedTeacher = await getTeacherById(parseInt(id ?? '0', 10));
         console.log(fetchedTeacher);
         setTeacher(fetchedTeacher);
-      } catch (error) {
+      } catch (error:any) {
         console.error('Error fetching teacher:', error);
       }
     };

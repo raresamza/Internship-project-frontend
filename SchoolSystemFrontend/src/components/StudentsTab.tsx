@@ -111,7 +111,7 @@ const StudentsTab: React.FC = () => {
                   grades={student.grades}
                   gpAs={student.gpAs}
                   absences={student.absences}
-                />
+                />                                                                                                                                     
               ))}
             </tbody>
           )}

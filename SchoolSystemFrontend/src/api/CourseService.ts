@@ -12,7 +12,7 @@ export interface Course {
   studentCourses?: StudentCourse[];
 }
 
-interface StudentCourse {
+export interface StudentCourse {
   studentId: number;
   studentName?: string;
 }
