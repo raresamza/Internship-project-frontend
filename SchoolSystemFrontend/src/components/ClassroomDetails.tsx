@@ -10,8 +10,12 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '.
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../@/components/ui/dialog';
 import { toast } from 'sonner';
 import Navbar from './Navbar';
+import useAuth from '../hooks/useAuth';
 
 const ClassroomDetails: React.FC = () => {
+  const token=useAuth()
+  const role=token?.role
+
   const { id } = useParams<{ id: string }>();
   const [classroom, setClassroom] = useState<Classroom | null>(null);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -268,18 +272,22 @@ const ClassroomDetails: React.FC = () => {
               )}
             </CardContent>
             <CardFooter className="flex justify-between">
-              <button
-                className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-xl"
-                onClick={handleOpenAddTeacherDialog}
-              >
-                Add Teacher
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-xl ml-4"
-                onClick={handleOpenRemoveTeacherDialog}
-              >
-                Remove Teacher
-              </button>
+              {role !== 'Student' && (
+                <>
+                  <button
+                    className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-xl"
+                    onClick={handleOpenAddTeacherDialog}
+                  >
+                    Add Teacher
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-xl ml-4"
+                    onClick={handleOpenRemoveTeacherDialog}
+                  >
+                    Remove Teacher
+                  </button>
+                </>
+              )}
             </CardFooter>
           </Card>
         </motion.div>
@@ -314,18 +322,22 @@ const ClassroomDetails: React.FC = () => {
               )}
             </CardContent>
             <CardFooter className="flex justify-between">
-              <button
-                className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-xl"
-                onClick={handleOpenAddStudentDialog}
-              >
-                Add Student
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-xl ml-4"
-                onClick={handleOpenRemoveStudentDialog}
-              >
-                Remove Student
-              </button>
+              {role !== 'Student' && (
+                <>
+                  <button
+                    className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-xl"
+                    onClick={handleOpenAddStudentDialog}
+                  >
+                    Add Student
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-xl ml-4"
+                    onClick={handleOpenRemoveStudentDialog}
+                  >
+                    Remove Student
+                  </button>
+                </>
+              )}
             </CardFooter>
           </Card>
         </motion.div>

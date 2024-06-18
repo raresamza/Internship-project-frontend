@@ -7,6 +7,7 @@ import { getUsers } from '../api/StudentService';
 import { motion } from 'framer-motion';
 import AddStudentDialog from './AddStudentDialog';
 import DeleteStudentDialog from './DeleteStudentDialog';
+import useAuth from '../hooks/useAuth';
 
 interface Student {
   id: number;
@@ -40,6 +41,12 @@ interface Absence {
 }
 
 const StudentsTab: React.FC = () => {
+
+
+  const token = useAuth();
+  const role = token?.role;
+
+
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState<Student[]>([]);
   const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
@@ -140,10 +147,12 @@ const StudentsTab: React.FC = () => {
             </motion.button>
           )}
         </div>
-        <div className="fixed bottom-4 right-10 p-4 flex space-x-4">
-          <AddStudentDialog refreshStudents={fetchStudents} />
-          <DeleteStudentDialog refreshStudents={fetchStudents} />
-        </div>
+        {role !== 'Student' && (
+          <div className="fixed bottom-4 right-10 p-4 flex space-x-4">
+            <AddStudentDialog refreshStudents={fetchStudents} />
+            <DeleteStudentDialog refreshStudents={fetchStudents} />
+          </div>
+        )}
       </div>
     </>
   );

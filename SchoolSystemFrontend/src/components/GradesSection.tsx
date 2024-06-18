@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Grade, Student } from '../api/StudentService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import useAuth from '../hooks/useAuth';
 
 interface GradesSectionProps {
   selectedStudentDetails: Student;
@@ -11,6 +12,12 @@ interface GradesSectionProps {
 }
 
 const GradesSection: React.FC<GradesSectionProps> = ({ selectedStudentDetails, grade, handleDialogOpen }) => {
+
+
+  const token=useAuth()
+  const role=token?.role
+
+
   return (
     <div className='relative border border-black rounded-lg mb-4 p-2 flex items-center justify-between'>
       <div>
@@ -30,26 +37,28 @@ const GradesSection: React.FC<GradesSectionProps> = ({ selectedStudentDetails, g
           )}
         </ul>
       </div>
-      <div className="flex space-x-2">
-        <motion.button
-          className="bg-indigo-400 hover:bg-indigo-500 text-white rounded-full p-2"
-          style={{ width: '2.5rem', height: '2.5rem' }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => handleDialogOpen('addGrade', grade.courseId)}
-        >
-          <FontAwesomeIcon icon={faSquarePlus} />
-        </motion.button>
-        <motion.button
-          className="bg-red-400 hover:bg-red-500 text-white rounded-full p-2"
-          style={{ width: '2.5rem', height: '2.5rem' }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => handleDialogOpen('deleteGrade', grade.courseId)}
-        >
-          <FontAwesomeIcon icon={faTrash} />
-        </motion.button>
-      </div>
+      {role !== 'Student' && (
+        <div className="flex space-x-2">
+          <motion.button
+            className="bg-indigo-400 hover:bg-indigo-500 text-white rounded-full p-2"
+            style={{ width: '2.5rem', height: '2.5rem' }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => handleDialogOpen('addGrade', grade.courseId)}
+          >
+            <FontAwesomeIcon icon={faSquarePlus} />
+          </motion.button>
+          <motion.button
+            className="bg-red-400 hover:bg-red-500 text-white rounded-full p-2"
+            style={{ width: '2.5rem', height: '2.5rem' }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => handleDialogOpen('deleteGrade', grade.courseId)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </motion.button>
+        </div>
+      )}
     </div>
   );
 };

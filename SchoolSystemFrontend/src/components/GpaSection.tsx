@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquarePlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'sonner';
 import { addGpa, undoGpa } from '../api/CatalogueService';
+import useAuth from '../hooks/useAuth';
 
 interface GpaSectionProps {
   selectedStudentDetails: Student | null;
@@ -17,6 +18,12 @@ const GpaSection: React.FC<GpaSectionProps> = ({
   gpas,
   refreshStudents,
 }) => {
+
+
+  const token= useAuth()
+  const role= token?.role
+
+
   const handleAddGpa = async (courseId: number) => {
     if (!selectedStudentDetails) return;
 
@@ -77,26 +84,28 @@ const GpaSection: React.FC<GpaSectionProps> = ({
           )}
         </ul>
       </div>
-      <div className="flex space-x-2">
-        <motion.button
-          className="bg-indigo-400 hover:bg-indigo-500 text-white rounded-full p-2"
-          style={{ width: '2.5rem', height: '2.5rem' }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => handleAddGpa(gpas[0]?.courseId)}
-        >
-          <FontAwesomeIcon icon={faSquarePlus} />
-        </motion.button>
-        <motion.button
-          className="bg-red-400 hover:bg-red-500 text-white rounded-full p-2"
-          style={{ width: '2.5rem', height: '2.5rem' }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => handleResetGpa(gpas[0]?.courseId)}
-        >
-          <FontAwesomeIcon icon={faTrash} />
-        </motion.button>
-      </div>
+      {role !== 'Student' && (
+        <div className="flex space-x-2">
+          <motion.button
+            className="bg-indigo-400 hover:bg-indigo-500 text-white rounded-full p-2"
+            style={{ width: '2.5rem', height: '2.5rem' }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => handleAddGpa(gpas[0]?.courseId)}
+          >
+            <FontAwesomeIcon icon={faSquarePlus} />
+          </motion.button>
+          <motion.button
+            className="bg-red-400 hover:bg-red-500 text-white rounded-full p-2"
+            style={{ width: '2.5rem', height: '2.5rem' }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => handleResetGpa(gpas[0]?.courseId)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </motion.button>
+        </div>
+      )}
     </div>
   );
 };

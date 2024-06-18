@@ -7,6 +7,7 @@ import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '../@/compon
 import { Loader2 } from 'lucide-react';
 import { getSubjectName } from '../utils/utils';
 import AssignTeacherDialog from './AssignTeacherToCourseDialog';
+import useAuth from '../hooks/useAuth';
 
 interface Teacher {
   id: number;
@@ -30,6 +31,9 @@ const TeacherDetail: React.FC = () => {
   const [teacher, setTeacher] = useState<Teacher | null>(null);
   const [isAssignDialogOpen, setIsAssignDialogOpen] = useState(false);
   const nav = useNavigate()
+  
+  const token = useAuth();
+  const role = token?.role;
 
   useEffect(() => {
     const fetchTeacher = async () => {
@@ -100,12 +104,14 @@ const TeacherDetail: React.FC = () => {
             </div>
           </CardContent>
           <CardFooter className="bg-gray-100 p-4 flex justify-end">
-            <button
-              className="bg-green-500 text-white hover:bg-green-600 rounded-xl p-2 ml-auto whitespace-nowrap"
-              onClick={handleAssignClick}
-            >
-              Assign Course
-            </button>
+            {role !== 'Student' && (
+              <button
+                className="bg-green-500 text-white hover:bg-green-600 rounded-xl p-2 ml-auto whitespace-nowrap"
+                onClick={handleAssignClick}
+              >
+                Assign Course
+              </button>
+            )}
           </CardFooter>
         </Card>
       </motion.div>
