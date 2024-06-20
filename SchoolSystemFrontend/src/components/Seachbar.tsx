@@ -1,14 +1,20 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState, ChangeEvent, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { motion } from 'framer-motion';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
+  initialQuery: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch, initialQuery }) => {
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setSearchQuery(initialQuery);
+  }, [initialQuery]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
@@ -16,19 +22,26 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     onSearch(query);
   };
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [searchQuery]); // Focus input on search query change
+
   return (
     <motion.div
       className="relative flex items-center"
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 600, damping: 15 }}
-      whileHover={{ scale: 1.05, x:20 }}
+      whileHover={{ scale: 1.05, x: 20 }}
     >
       <FontAwesomeIcon
         icon={faSearch}
         className="absolute left-4 text-gray-400"
       />
       <input
+        ref={inputRef}
         type="text"
         placeholder="Search..."
         value={searchQuery}

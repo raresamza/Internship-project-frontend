@@ -130,3 +130,32 @@ export interface Absence {
   export const deleteStudent = async (id: number): Promise<void> => {
     await axios.delete(`${API_URL}/${id}`);
   };
+
+
+  export const getUsersQuery = async (page: number, pageSize: number, query: string = ''): Promise<{ students: Student[], totalCount: number }> => {
+    try {
+      const response = await axios.get(`${API_URL}/query`, {
+        params: { page, pageSize, query: query || '' } // Default to empty string if query is null or undefined
+      });
+      const data = response.data;
+      const students: Student[] = data.students;
+      const totalCount: number = data.totalCount;
+      return { students, totalCount };
+    } catch (error) {
+      console.error('Error fetching students:', error);
+      throw error;
+    }
+  };
+  
+  // New function to search students by name
+  export const searchStudentsByName = async (name: string): Promise<Student[]> => {
+    try {
+      const response = await axios.get(`${API_URL}`, {
+        params: { query: name }
+      });
+      return response.data.students;
+    } catch (error) {
+      console.error('Error fetching students by name:', error);
+      throw error;
+    }
+  };

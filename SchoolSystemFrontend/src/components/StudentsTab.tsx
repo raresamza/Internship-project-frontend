@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './Navbar';
 import Student from './Student';
 import SearchBar from './Seachbar';
 import { Loader2 } from 'lucide-react';
-import { getUsers } from '../api/StudentService';
+import { getUsersQuery } from '../api/StudentService';
 import { motion } from 'framer-motion';
 import AddStudentDialog from './AddStudentDialog';
 import DeleteStudentDialog from './DeleteStudentDialog';
@@ -41,51 +41,58 @@ interface Absence {
 }
 
 const StudentsTab: React.FC = () => {
-
-
   const token = useAuth();
   const role = token?.role;
 
-
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState<Student[]>([]);
-  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
-  const [pageNumber, setPageNumber] = useState(1); // Track current page number
-  const [pageSize] = useState(5); // Page size
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize] = useState(5);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async (page: number, query: string = '') => {
     try {
-      const fetchedStudents = await getUsers(pageNumber, pageSize);
-      setStudents(fetchedStudents); // Replace existing data with new data
-      setFilteredStudents(fetchedStudents); // Update filtered data as well
+      setLoading(true);
+      const { students: fetchedStudents, totalCount } = await getUsersQuery(page, pageSize, query || '');
+      setStudents(fetchedStudents);
+      setTotalStudents(totalCount);
     } catch (error) {
       console.error('Error fetching students:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [pageSize]);
+
+  const loadInitialStudents = useCallback(async () => {
+    await fetchStudents(1, '');
+  }, [fetchStudents]);
 
   useEffect(() => {
-    fetchStudents();
-  }, [pageNumber]); // Fetch data whenever page number changes
+    loadInitialStudents();
+  }, [loadInitialStudents]);
 
-  const handleLoadMore = () => {
-    setPageNumber(prevPageNumber => prevPageNumber + 1); // Increment page number to fetch next page
+  const handleLoadMore = async () => {
+    const newPage = pageNumber + 1;
+    setPageNumber(newPage);
+    await fetchStudents(newPage, searchQuery);
   };
 
-  const handlePreviousPage = () => {
+  const handlePreviousPage = async () => {
     if (pageNumber > 1) {
-      setPageNumber(prevPageNumber => prevPageNumber - 1); // Decrement page number to go back
+      const newPage = pageNumber - 1;
+      setPageNumber(newPage);
+      await fetchStudents(newPage, searchQuery);
     }
   };
 
-  const handleSearch = (query: string) => {
-    const filtered = students.filter(student => {
-      const fullName = `${student.name.toLowerCase()}`;
-      return fullName.includes(query.toLowerCase());
-    });
-    setFilteredStudents(filtered);
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    setPageNumber(1);
+    await fetchStudents(1, query);
   };
+
+  const isLastPage = students.length < pageSize;
 
   if (loading) {
     return (
@@ -100,25 +107,25 @@ const StudentsTab: React.FC = () => {
       <Navbar />
       <p className='px-20 text-4xl font-bold py-10'>Students:</p>
       <div className='px-20 py-6'>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} initialQuery={searchQuery} />
         <table className='border-separate border-spacing-y-6 mt-6'>
           {!loading && (
             <tbody>
-              {filteredStudents.map((student, index) => (
+              {students.map((student, index) => (
                 <Student
                   key={student.id}
                   name={student.name}
                   parentEmail={student.parentEmail}
-                  index={index} // Pass index to Student
+                  index={index}
                   id={student.id}
                   parentName={student.parentName}
-                  age={0}
+                  age={student.age}
                   address={student.address}
                   phoneNumber={student.phoneNumber}
                   grades={student.grades}
                   gpAs={student.gpAs}
                   absences={student.absences}
-                />                                                                                                                                     
+                />
               ))}
             </tbody>
           )}
@@ -128,19 +135,19 @@ const StudentsTab: React.FC = () => {
             <motion.button
               className='bg-red-500 text-white hover:bg-red-700 rounded-md h-10 px-4 py-2 mr-2'
               onClick={handlePreviousPage}
-              initial={{ x: -150, opacity: 0 }} // Initial animation state
-              animate={{ x: 0, opacity: 1 }} // Animation when trigger appears
+              initial={{ x: -150, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
               Previous
             </motion.button>
           )}
-          {students.length > 0 && students.length % pageSize === 0 && (
+          {!isLastPage && (
             <motion.button
               className='bg-green-500 text-white hover:bg-green-700 rounded-xl h-10 px-4 py-2'
               onClick={handleLoadMore}
-              initial={{ x: -150, opacity: 0 }} // Initial animation state
-              animate={{ x: 0, opacity: 1 }} // Animation when trigger appears
+              initial={{ x: -150, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
               Load More
@@ -149,8 +156,8 @@ const StudentsTab: React.FC = () => {
         </div>
         {role !== 'Student' && (
           <div className="fixed bottom-4 right-10 p-4 flex space-x-4">
-            <AddStudentDialog refreshStudents={fetchStudents} />
-            <DeleteStudentDialog refreshStudents={fetchStudents} />
+            <AddStudentDialog refreshStudents={loadInitialStudents} />
+            <DeleteStudentDialog refreshStudents={loadInitialStudents} />
           </div>
         )}
       </div>
