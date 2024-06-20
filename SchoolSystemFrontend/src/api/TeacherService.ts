@@ -1,4 +1,5 @@
 import axios from "axios";
+import { StudentCourse } from "./CourseService";
 
 const API_URL = "https://localhost:7213/api/Teacher";
 
@@ -13,10 +14,11 @@ export interface Teacher {
   taughtCourse: {
     id: number;
     name: string;
-    studentCourses: {
-      studentId: number;
-      courseId: number;
-    }[];
+    studentCourses: StudentCourse[]
+    // studentCourses: {
+    //   studentId: number;
+    //   courseId: number;
+    // }[];
   };
 }
 

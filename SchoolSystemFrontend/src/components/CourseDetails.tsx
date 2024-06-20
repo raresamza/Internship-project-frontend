@@ -8,10 +8,13 @@ import Navbar from './Navbar';
 import { Loader2 } from 'lucide-react';
 import { getSubjectName } from '../utils/utils';
 import EnrollStudentDialog from './EnrollStudentDialog';
+import useAuth from '../hooks/useAuth';
 
 const CourseDetails = () => {
   const { courseId } = useParams<{ courseId: string }>();
 
+  const token = useAuth();
+  const role = token?.role;
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEnrollDialogOpen, setIsEnrollDialogOpen] = useState(false);
@@ -127,15 +130,17 @@ const CourseDetails = () => {
                   </SelectContent>
                 </Select>
               </motion.div>
-              <motion.button
-                className="bg-green-500 text-white hover:bg-green-600 rounded-xl p-2 ml-auto whitespace-nowrap"
-                onClick={handleEnrollClick}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.4 }}
-              >
-                Enroll Student
-              </motion.button>
+              {role !== 'Student' && (
+                <motion.button
+                  className="bg-green-500 text-white hover:bg-green-600 rounded-xl p-2 ml-auto whitespace-nowrap"
+                  onClick={handleEnrollClick}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.4 }}
+                >
+                  Enroll Student
+                </motion.button>
+              )}
             </CardFooter>
           </Card>
           <EnrollStudentDialog

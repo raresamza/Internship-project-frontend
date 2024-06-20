@@ -8,6 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { getSubjectName } from '../utils/utils';
 import AssignTeacherDialog from './AssignTeacherToCourseDialog';
 import useAuth from '../hooks/useAuth';
+import { StudentCourse } from '../api/CourseService';
 
 interface Teacher {
   id: number;
@@ -19,10 +20,11 @@ interface Teacher {
   taughtCourse: {
     id: number;
     name: string;
-    studentCourses: {
-      studentId: number;
-      courseId: number;
-    }[];
+    studentCourses:StudentCourse[]
+    // studentCourses: {
+    //   studentId: number;
+    //   courseId: number;
+    // }[];
   } | null;
 }
 
@@ -90,7 +92,7 @@ const TeacherDetail: React.FC = () => {
                           Enrolled students
                         </CollapsibleTrigger>
                         {teacher.taughtCourse.studentCourses.map(course => (
-                          <CollapsibleContent key={course.courseId}>{course.courseId}</CollapsibleContent>
+                          <CollapsibleContent key={course.studentId}>{course.studentName}</CollapsibleContent>
                         ))}
                       </Collapsible>
                     ) : (
