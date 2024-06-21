@@ -9,6 +9,7 @@ import { getSubjectName } from '../utils/utils';
 import AssignTeacherDialog from './AssignTeacherToCourseDialog';
 import useAuth from '../hooks/useAuth';
 import { StudentCourse } from '../api/CourseService';
+import Navbar from './Navbar';
 
 interface Teacher {
   id: number;
@@ -64,7 +65,9 @@ const TeacherDetail: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <>
+    <Navbar/>
+    <div className="flex justify-center items-center min-h-[calc(100vh-80px)] bg-gray-100 ">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -136,6 +139,7 @@ const TeacherDetail: React.FC = () => {
         }}
       />
     </div>
+    </>
   );
 };
 

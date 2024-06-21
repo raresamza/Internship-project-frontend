@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 import { getCourses } from '../api/CourseService';
 import { Course } from '../api/CourseService';
 import { Loader2 } from 'lucide-react';
-import SearchBar from './Seachbar';
+import SearchBar from './Searchbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import AddCourseDialog from './AddCourseDialog';
@@ -80,7 +80,7 @@ const CourseList: React.FC = () => {
       <Navbar />
       <div className="px-20 py-6 w-full flex flex-col items-center">
         <div className="w-full mb-4">
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar onSearch={handleSearch} initialQuery=''/>
         </div>
         {loading ? (
           <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">

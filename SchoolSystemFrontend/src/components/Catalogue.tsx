@@ -13,6 +13,7 @@ import DeleteGradeDialog from './DeleteGradeDialog';
 import GpaSection from './GpaSection';
 import GradesSection from './GradesSection';
 import StudentSelector from './StudentSelector';
+import Searchbar from './Searchbar';
 
 interface CatalogueProps {
   students: Student[];
@@ -33,6 +34,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
   const [newAbsenceDate, setNewAbsenceDate] = useState<string>('');
   const [selectedAbsenceToDelete, setSelectedAbsenceToDelete] = useState<string | null>(null);
   const [closeReason, setCloseReason] = useState<'success' | 'user' | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   const uniqueGrades: Grade[] = [];
   grades.forEach((gradeArray) => {
@@ -86,31 +88,39 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
     return `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
   };
 
+  const filteredGrades = uniqueGrades.filter(grade =>
+    grade.courseName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="mx-4 p-8">
+    <div className="mx-4 p-8 bg-gray-100 min-h-screen">
       <Toaster />
-      <h1 className="text-4xl font-bold mb-8">Catalogue</h1>
+      <header className="bg-gradient-to-r from-emerald-400 to-blue-500 p-6 rounded-lg shadow-lg mb-8 flex justify-between items-center">
+        <h1 className="text-4xl font-bold text-white">Catalogue</h1>
+      </header>
       <div className="space-y-8">
-        {uniqueGrades.map((grade, index) => (
+        {filteredGrades.map((grade, index) => (
           <Collapsible key={index}>
             <motion.div
               initial={{ x: -50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: index * 0.1 }}
+              className="w-full"
             >
-              <CollapsibleTrigger className='text-white bg-emerald-500 hover:bg-emerald-600'>
+              <CollapsibleTrigger className='text-white bg-emerald-500 hover:bg-emerald-600 rounded-t-lg p-4 shadow-md w-full'>
                 {grade.courseName}
               </CollapsibleTrigger>
             </motion.div>
-            <CollapsibleContent className='mt-4'>
+            <CollapsibleContent className='mt-4 w-full'>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 exit={{ opacity: 0, y: -50 }}
+                className="w-full"
               >
-                <Card>
-                  <CardHeader className='bg-emerald-200 rounded-t-xl px-10 py-4'>
+                <Card className="shadow-lg w-full">
+                  <CardHeader className='bg-emerald-200 rounded-t-lg px-10 py-4 w-full'>
                     <CardTitle className='text-emerald-900 border-b-2 border-black pb-2 mb-4'>
                       {grade.courseName}
                     </CardTitle>
@@ -121,7 +131,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
                       handleStudentSelect={handleStudentSelect}
                     />
                   </CardHeader>
-                  <CardContent className='bg-emerald-200 px-10 py-4'>
+                  <CardContent className='bg-emerald-200 px-10 py-4 w-full'>
                     {selectedStudentDetails && (
                       <>
                         <GradesSection
@@ -143,7 +153,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
                       </>
                     )}
                   </CardContent>
-                  <CardFooter className='bg-emerald-200 px-10 py-4 rounded-b-xl shadow-xl'>
+                  <CardFooter className='bg-emerald-200 px-10 py-4 rounded-b-lg shadow-md w-full'>
                     <p className='text-gray-700'>Info was last updated on: {new Date().toLocaleDateString("ro-RO")}</p>
                   </CardFooter>
                 </Card>

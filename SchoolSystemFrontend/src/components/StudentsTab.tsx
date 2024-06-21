@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Navbar from './Navbar';
 import Student from './Student';
-import SearchBar from './Seachbar';
+import SearchBar from './Searchbar';
 import { Loader2 } from 'lucide-react';
 import { getUsersQuery } from '../api/StudentService';
 import { motion } from 'framer-motion';
@@ -92,7 +92,7 @@ const StudentsTab: React.FC = () => {
     await fetchStudents(1, query);
   };
 
-  const isLastPage = students.length < pageSize;
+  const isLastPage = students.length < pageSize*pageNumber-1;
 
   if (loading) {
     return (
