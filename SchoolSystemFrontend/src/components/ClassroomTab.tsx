@@ -26,19 +26,24 @@ const Classrooms: React.FC = () => {
     fetchClassrooms();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-muted-foreground" size={48} />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen">
+  //       <Loader2 className="animate-spin text-muted-foreground" size={48} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
     <Navbar/>
     <div className="min-h-screen bg-white px-20 py-10">
       <h1 className="text-4xl font-bold text-gray-800 mb-8">Classrooms</h1>
+      {loading ? (
+          <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+            <Loader2 className="animate-spin text-muted-foreground" size={48} />
+          </div>
+        ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
         {classrooms.map((classroom, index) => (
           <motion.div
@@ -78,7 +83,9 @@ const Classrooms: React.FC = () => {
           </motion.div>
         ))}
       </div>
+    )}  
     </div>
+    
     </>
   );
 };

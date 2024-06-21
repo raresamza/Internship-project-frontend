@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Student from './Student';
 import SearchBar from './Searchbar';
@@ -51,10 +51,11 @@ const StudentsTab: React.FC = () => {
   const [pageSize] = useState(5);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const fetchStudents = useCallback(async (page: number, query: string = '') => {
+  const fetchStudents = async (page: number, query: string = '') => {
     try {
       setLoading(true);
       const { students: fetchedStudents, totalCount } = await getUsersQuery(page, pageSize, query || '');
+      // console.log(totalCount,totalStudents)
       setStudents(fetchedStudents);
       setTotalStudents(totalCount);
     } catch (error) {
@@ -62,15 +63,16 @@ const StudentsTab: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [pageSize]);
+  };
 
-  const loadInitialStudents = useCallback(async () => {
-    await fetchStudents(1, '');
-  }, [fetchStudents]);
+
+  const loadInitialStudents = () => {
+    fetchStudents(1, '');
+  };
 
   useEffect(() => {
     loadInitialStudents();
-  }, [loadInitialStudents]);
+  }, []);
 
   const handleLoadMore = async () => {
     const newPage = pageNumber + 1;
@@ -86,82 +88,96 @@ const StudentsTab: React.FC = () => {
     }
   };
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = (query: string) => {
     setSearchQuery(query);
     setPageNumber(1);
-    await fetchStudents(1, query);
+    fetchStudents(1, query);
   };
 
-  const isLastPage = students.length < pageSize*pageNumber-1;
+  const isLastPage = (pageNumber * pageSize) >= totalStudents;
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
-        <Loader2 className='animate-spin text-muted-foreground' size={48} />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full overflow-y-scroll">
+  //       <Loader2 className='animate-spin text-muted-foreground' size={48} />
+  //     </div>
+  //   );
+  // }
 
   return (
-    <>
+    <div className='h-screen flex flex-col'>
       <Navbar />
-      <p className='px-20 text-4xl font-bold py-10'>Students:</p>
-      <div className='px-20 py-6'>
+
+      <div className='flex-1 overflow-y-scroll no-scrollbar'>
+        <p className='px-20 text-4xl font-bold py-10'>Students:</p>
+        <div className='px-20'>
         <SearchBar onSearch={handleSearch} initialQuery={searchQuery} />
-        <table className='border-separate border-spacing-y-6 mt-6'>
-          {!loading && (
-            <tbody>
-              {students.map((student, index) => (
-                <Student
-                  key={student.id}
-                  name={student.name}
-                  parentEmail={student.parentEmail}
-                  index={index}
-                  id={student.id}
-                  parentName={student.parentName}
-                  age={student.age}
-                  address={student.address}
-                  phoneNumber={student.phoneNumber}
-                  grades={student.grades}
-                  gpAs={student.gpAs}
-                  absences={student.absences}
-                />
-              ))}
-            </tbody>
-          )}
-        </table>
-        <div className="fixed bottom-4 left-20 p-4">
-          {pageNumber > 1 && (
-            <motion.button
-              className='bg-red-500 text-white hover:bg-red-700 rounded-md h-10 px-4 py-2 mr-2'
-              onClick={handlePreviousPage}
-              initial={{ x: -150, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              Previous
-            </motion.button>
-          )}
-          {!isLastPage && (
-            <motion.button
-              className='bg-green-500 text-white hover:bg-green-700 rounded-xl h-10 px-4 py-2'
-              onClick={handleLoadMore}
-              initial={{ x: -150, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              Load More
-            </motion.button>
+        </div>
+        <div className='px-20 py-6'>
+          {
+            loading ? (
+              <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
+                <Loader2 className="animate-spin text-muted-foreground" size={48} />
+              </div>
+            ) : (
+              <table className='border-separate border-spacing-y-6 mt-6'>
+                {!loading && (
+                  <tbody>
+                    {students.map((student, index) => (
+                      <Student
+                        key={student.id}
+                        name={student.name}
+                        parentEmail={student.parentEmail}
+                        index={index}
+                        id={student.id}
+                        parentName={student.parentName}
+                        age={student.age}
+                        address={student.address}
+                        phoneNumber={student.phoneNumber}
+                        grades={student.grades}
+                        gpAs={student.gpAs}
+                        absences={student.absences}
+                      />
+                    ))}
+                  </tbody>
+                )}
+              </table>
+            )
+          }
+
+          <div className="bottom-4 left-20 p-4">
+            {pageNumber > 1 && (
+              <motion.button
+                className='bg-red-500 text-white hover:bg-red-700 rounded-md h-10 px-4 py-2 mr-2'
+                onClick={handlePreviousPage}
+                initial={{ x: -150, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                Previous
+              </motion.button>
+            )}
+            {!isLastPage && (
+              <motion.button
+                className='bg-green-500 text-white hover:bg-green-700 rounded-xl h-10 px-4 py-2'
+                onClick={handleLoadMore}
+                initial={{ x: -150, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                Load More
+              </motion.button>
+            )}
+          </div>
+          {role !== 'Student' && (
+            <div className="bottom-4 right-10 p-4 flex space-x-4">
+              <AddStudentDialog refreshStudents={loadInitialStudents} />
+              <DeleteStudentDialog refreshStudents={loadInitialStudents} />
+            </div>
           )}
         </div>
-        {role !== 'Student' && (
-          <div className="fixed bottom-4 right-10 p-4 flex space-x-4">
-            <AddStudentDialog refreshStudents={loadInitialStudents} />
-            <DeleteStudentDialog refreshStudents={loadInitialStudents} />
-          </div>
-        )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -15,6 +15,8 @@ const CourseDetails = () => {
 
   const token = useAuth();
   const role = token?.role;
+
+  
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEnrollDialogOpen, setIsEnrollDialogOpen] = useState(false);

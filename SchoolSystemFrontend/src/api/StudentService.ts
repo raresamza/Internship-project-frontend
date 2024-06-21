@@ -137,9 +137,10 @@ export interface Absence {
       const response = await axios.get(`${API_URL}/query`, {
         params: { page, pageSize, query: query || '' } // Default to empty string if query is null or undefined
       });
+      console.log(response.data)
       const data = response.data;
-      const students: Student[] = data.students;
-      const totalCount: number = data.totalCount;
+      const students: Student[] = data.students.items;
+      const totalCount: number = data.students.totalCount;
       return { students, totalCount };
     } catch (error) {
       console.error('Error fetching students:', error);

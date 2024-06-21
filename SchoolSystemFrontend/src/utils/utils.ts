@@ -4,6 +4,7 @@ export const subjectMapping: { [key: string]: string } = {
   "0": 'Mathematics',
   "1": 'History',
   "2": 'Science',
+  "3": 'English',
   // Add more subjects as needed
 };
 
