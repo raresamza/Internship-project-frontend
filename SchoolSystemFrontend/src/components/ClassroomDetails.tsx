@@ -11,6 +11,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { toast } from 'sonner';
 import Navbar from './Navbar';
 import useAuth from '../hooks/useAuth';
+import { getSubjectName } from '../utils/utils';
 
 const ClassroomDetails: React.FC = () => {
   const token=useAuth()
@@ -266,7 +267,7 @@ const ClassroomDetails: React.FC = () => {
               {selectedTeacher && (
                 <div className="mt-4">
                   <p className="text-gray-800"><strong>Name:</strong> {selectedTeacher.name}</p>
-                  <p className="text-gray-800"><strong>Subject:</strong> {selectedTeacher.subject}</p>
+                  <p className="text-gray-800"><strong>Subject:</strong> {getSubjectName(String(selectedTeacher.subject))}</p>
                   <p className="text-gray-800"><strong>Taught Course:</strong> {selectedTeacher.taughtCourse?.name || 'None'}</p>
                 </div>
               )}

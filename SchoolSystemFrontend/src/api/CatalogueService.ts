@@ -10,6 +10,8 @@ export interface GpaProps{
 }
 
 export async function addGpa(values:GpaProps) {
+  console.log(values.studentId)
+  console.log(values.courseId)
     try {
         const response = await axios.put(`${BASE_URL}/addGpa`, null, {
           params: {
@@ -26,6 +28,8 @@ export async function addGpa(values:GpaProps) {
 
 
 export async function undoGpa(values:GpaProps) {
+
+  
     try {
         const response = await axios.put(`${BASE_URL}/undoGpa`, null, {
           params: {

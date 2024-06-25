@@ -143,6 +143,7 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
                           selectedStudentDetails={selectedStudentDetails}
                           gpas={selectedStudentDetails.gpAs} // Pass the GPA data directly
                           refreshStudents={refreshStudents}
+                          selectedCourseId={grade.courseId} // Pass the selected courseId
                         />
                         <AbsencesSection
                           selectedStudentDetails={selectedStudentDetails}

@@ -11,6 +11,7 @@ const subjects = [
   { id: 0, name: 'Mathematics' },
   { id: 1, name: 'History' },
   { id: 2, name: 'Science' },
+  {id: 3, name:'English'}
   // Add more subjects as needed
 ];
 

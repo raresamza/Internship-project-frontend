@@ -37,7 +37,8 @@ const Login = () => {
           validationSchema={validationSchema}
           onSubmit={async (values) => {
             console.log("Form submitted");
-            await login(values.email, values.password).then(() => nav('/sign-in'))
+            console.log(values.email+" "+values.password)
+            await login(values.email, values.password).then(() => nav('/students-tab'))
           }}
         >
           {(formik) => (

@@ -11,24 +11,23 @@ interface GpaSectionProps {
   selectedStudentDetails: Student | null;
   gpas: Gpa[];
   refreshStudents: () => void;
+  selectedCourseId: number;  // Add selectedCourseId to props
 }
 
 const GpaSection: React.FC<GpaSectionProps> = ({
   selectedStudentDetails,
   gpas,
   refreshStudents,
+  selectedCourseId,  // Add selectedCourseId to destructuring
 }) => {
+  const token = useAuth();
+  const role = token?.role;
 
-
-  const token= useAuth()
-  const role= token?.role
-
-
-  const handleAddGpa = async (courseId: number) => {
+  const handleAddGpa = async () => {
     if (!selectedStudentDetails) return;
 
     try {
-      await addGpa({ courseId, studentId: selectedStudentDetails.id });
+      await addGpa({ courseId: selectedCourseId, studentId: selectedStudentDetails.id });
       toast.success("GPA successfully updated 🎉", {
         style: {
           backgroundColor: 'green',
@@ -46,11 +45,11 @@ const GpaSection: React.FC<GpaSectionProps> = ({
     }
   };
 
-  const handleResetGpa = async (courseId: number) => {
+  const handleResetGpa = async () => {
     if (!selectedStudentDetails) return;
 
     try {
-      await undoGpa({ courseId, studentId: selectedStudentDetails.id });
+      await undoGpa({ courseId: selectedCourseId, studentId: selectedStudentDetails.id });
       toast.success("GPA reset to 0 🎉", {
         style: {
           backgroundColor: 'green',
@@ -68,17 +67,17 @@ const GpaSection: React.FC<GpaSectionProps> = ({
     }
   };
 
+  const selectedCourseGpa = gpas.find(gpa => gpa.courseId === selectedCourseId);
+
   return (
     <div className='relative border border-black rounded-lg mb-4 p-2 flex items-center justify-between'>
       <div>
         <h2 className='text-lg font-semibold text-green-900'>GPAs</h2>
         <ul>
-          {gpas.length > 0 ? (
-            gpas.map((gpa, index) => (
-              <li className='pl-2 text-gray-700' key={index}>
-                GPA: {gpa.gpaValue === 0 ? 'N/A' : gpa.gpaValue}
-              </li>
-            ))
+          {selectedCourseGpa ? (
+            <li className='pl-2 text-gray-700'>
+              GPA: {selectedCourseGpa.gpaValue === 0 ? 'N/A' : selectedCourseGpa.gpaValue}
+            </li>
           ) : (
             <li className='pl-2 text-gray-700'>Not assigned yet</li>
           )}
@@ -91,7 +90,7 @@ const GpaSection: React.FC<GpaSectionProps> = ({
             style={{ width: '2.5rem', height: '2.5rem' }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => handleAddGpa(gpas[0]?.courseId)}
+            onClick={handleAddGpa}
           >
             <FontAwesomeIcon icon={faSquarePlus} />
           </motion.button>
@@ -100,7 +99,7 @@ const GpaSection: React.FC<GpaSectionProps> = ({
             style={{ width: '2.5rem', height: '2.5rem' }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => handleResetGpa(gpas[0]?.courseId)}
+            onClick={handleResetGpa}
           >
             <FontAwesomeIcon icon={faTrash} />
           </motion.button>
