@@ -40,6 +40,7 @@ const AddAbsenceDialog: React.FC<AddAbsenceDialogProps> = ({
         const params: AbsenceParams = {
           date: newAbsenceDate,
           studentId: selectedStudentId,
+          courseId:currentCourseId,
           absenceId, // Use the correct absenceId
         };
         await addAbsence(params);

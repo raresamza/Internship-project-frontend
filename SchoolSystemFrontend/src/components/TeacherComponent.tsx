@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChalkboardUser } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
+import { StudentCourse } from '../api/CourseService';
 
 interface TeacherProps {
   index: number;
@@ -15,14 +16,11 @@ interface TeacherProps {
   taughtCourse: {
     id: number;
     name: string;
-    studentCourses: {
-      studentId: number;
-      courseId: number;
-    }[];
+    studentCourses:StudentCourse[];
   };
 }
 
-const Teacher: React.FC<TeacherProps> = ({ id, name,  phoneNumber, index }) => {
+const TeacherComponent: React.FC<TeacherProps> = ({ id, name,  phoneNumber, index }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -53,4 +51,4 @@ const Teacher: React.FC<TeacherProps> = ({ id, name,  phoneNumber, index }) => {
   );
 }
 
-export default Teacher;
+export default TeacherComponent;

@@ -58,7 +58,7 @@ const AddCourseDialog: React.FC<AddCourseDialogProps> = ({ isOpen, setIsOpen, re
             className="border rounded p-2 w-full mt-2"
             placeholder="Enter course name"
           />
-          <Select onValueChange={(value) => setCourseSubject(value)}>
+          <Select onValueChange={(value:string) => setCourseSubject(value)}>
             <SelectTrigger className="w-full mt-2">
               <SelectValue placeholder="Select a subject" />
             </SelectTrigger>

@@ -351,7 +351,7 @@ const ClassroomDetails: React.FC = () => {
             <DialogDescription>Select a teacher to add to the classroom</DialogDescription>
           </DialogHeader>
           <div className="mt-4">
-            <Select onValueChange={(value) => setSelectedTeacher(availableTeachers.find(t => t.id === Number(value)) || null)}>
+            <Select onValueChange={(value:string) => setSelectedTeacher(availableTeachers.find(t => t.id === Number(value)) || null)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a teacher" />
               </SelectTrigger>
@@ -388,7 +388,7 @@ const ClassroomDetails: React.FC = () => {
             <DialogDescription>Select a teacher to remove from the classroom</DialogDescription>
           </DialogHeader>
           <div className="mt-4">
-            <Select onValueChange={(value) => setSelectedTeacherToRemove(teachers.find(t => t.id === Number(value)) || null)}>
+            <Select onValueChange={(value:string) => setSelectedTeacherToRemove(teachers.find(t => t.id === Number(value)) || null)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a teacher" />
               </SelectTrigger>
@@ -425,7 +425,7 @@ const ClassroomDetails: React.FC = () => {
             <DialogDescription>Select a student to add to the classroom</DialogDescription>
           </DialogHeader>
           <div className="mt-4">
-            <Select onValueChange={(value) => setSelectedStudentToAdd(availableStudents.find(s => s.id === Number(value)) || null)}>
+            <Select onValueChange={(value:string) => setSelectedStudentToAdd(availableStudents.find(s => s.id === Number(value)) || null)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a student" />
               </SelectTrigger>
@@ -462,7 +462,7 @@ const ClassroomDetails: React.FC = () => {
             <DialogDescription>Select a student to remove from the classroom</DialogDescription>
           </DialogHeader>
           <div className="mt-4">
-            <Select onValueChange={(value) => setSelectedStudentToRemove(classroom.students.find(s => s.id === Number(value)) || null)}>
+            <Select onValueChange={(value:string) => setSelectedStudentToRemove(classroom.students.find(s => s.id === Number(value)) || null)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select a student" />
               </SelectTrigger>

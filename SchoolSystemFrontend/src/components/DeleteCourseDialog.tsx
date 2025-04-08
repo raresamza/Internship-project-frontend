@@ -49,7 +49,7 @@ const DeleteCourseDialog: React.FC<DeleteCourseDialogProps> = ({ isOpen, setIsOp
           <DialogDescription>Select a course to delete.</DialogDescription>
         </DialogHeader>
         <div className="mt-4">
-          <Select onValueChange={(value) => setSelectedCourse(Number(value))}>
+          <Select onValueChange={(value:string) => setSelectedCourse(Number(value))}>
             <SelectTrigger className="w-full mt-2">
               <SelectValue placeholder="Select a course" />
             </SelectTrigger>

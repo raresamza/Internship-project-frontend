@@ -72,7 +72,7 @@ const EnrollStudentDialog: React.FC<EnrollStudentDialogProps> = ({ isOpen, setIs
           <DialogDescription>Select a student to enroll in this course.</DialogDescription>
         </DialogHeader>
         <div className="mt-4">
-          <Select onValueChange={(value) => setSelectedStudent(Number(value))}>
+          <Select onValueChange={(value:string) => setSelectedStudent(Number(value))}>
             <SelectTrigger className="w-full mt-2">
               <SelectValue placeholder="Select a student" />
             </SelectTrigger>

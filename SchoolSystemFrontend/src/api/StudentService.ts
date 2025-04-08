@@ -18,11 +18,11 @@ export interface Student {
 
   export interface StudentCreationDto {
     parentName: string;
-  name: string;
-  parentEmail: string;
-  phoneNumber: number;
-  age: number;
-  address: string;
+    name: string;
+    parentEmail: string;
+    phoneNumber: number;
+    age: number;
+    address: string;
   }
   
 export interface Grade {
@@ -46,7 +46,8 @@ export interface Absence {
   export interface AbsenceParams {
     date: string;
     studentId: number;
-    absenceId: number; // Corrected to use absenceId instead of courseId
+    courseId:number
+    absenceId?: number; // Corrected to use absenceId instead of courseId
   }
   
   export interface DeleteAbsenceParams {
@@ -55,10 +56,11 @@ export interface Absence {
     courseId:number,
   }
 
-  export interface DeleteAbsenceParams {
+
+  export interface UploadHomeworkParams {
     studentId: number;
-    absenceId: number;
-    courseId: number;
+    homeworkId: number;
+    file: File;
   }
   
   
@@ -72,6 +74,18 @@ export interface Absence {
     // console.log(response.data.items)
     return response.data.items;
   }
+
+  export const getStudentByEmail = async (email: string): Promise<Student> => {
+    try {
+      const response = await axios.get(`${API_URL}/by-email`, {
+        params: { email }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching student by email:', error);
+      throw error;
+    }
+  };
 
   // Function to add an absence to a student
   export async function addAbsence(params: AbsenceParams): Promise<void> {
@@ -159,4 +173,23 @@ export interface Absence {
       console.error('Error fetching students by name:', error);
       throw error;
     }
+  };
+
+  export const uploadHomeworkFile = async ({
+    studentId,
+    homeworkId,
+    file
+  }: UploadHomeworkParams): Promise<void> => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    await axios.post(
+      `https://localhost:7213/api/Homework/${studentId}/submit-homework/${homeworkId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
   };

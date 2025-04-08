@@ -61,7 +61,7 @@ const DeleteStudentDialog: React.FC<DeleteStudentDialogProps> = ({ refreshStuden
             <DialogDescription>Select a student to delete.</DialogDescription>
           </DialogHeader>
           <div className="mt-4">
-            <Select onValueChange={(value) => setSelectedStudentId(Number(value))}>
+            <Select onValueChange={(value:string) => setSelectedStudentId(Number(value))}>
               <SelectTrigger className="w-full mt-2">
                 <SelectValue placeholder="Select a student" />
               </SelectTrigger>

@@ -3,7 +3,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../@/components/ui/select';
 import { toast } from 'sonner';
 import { GradeParams, addGrade, removeGrade } from '../api/CourseService';
-import {AbsenceParams, addAbsence, removeAbsence}  from "../api/StudentService"
+import {AbsenceParams, addAbsence, DeleteAbsenceParams, removeAbsence}  from "../api/StudentService"
 import { Student } from '../api/StudentService';
 
 interface DialogsProps {
@@ -123,8 +123,8 @@ const Dialogs: React.FC<DialogsProps> = ({
 
   const handleAbsenceDelete = async () => {
     if (selectedAbsenceToDelete && selectedStudentId !== null && currentCourseId !== null) {
-      const params: AbsenceParams = {
-        date: selectedAbsenceToDelete,
+      const params: DeleteAbsenceParams = {
+        absenceId: Number(selectedAbsenceToDelete), 
         studentId: selectedStudentId,
         courseId: currentCourseId,
       };

@@ -1,28 +1,29 @@
 import { useState, useEffect } from 'react';
 import Navbar from './Navbar';
-import Teacher from './Teacher';
+import TeacherComponent from './TeacherComponent';
 import { getTeachers } from '../api/TeacherService';
 import { Loader2 } from 'lucide-react';
 import AddTeacherDialog from './AddTeacherDialog';
 import DeleteTeacherDialog from './DeleteTeacherDialog';
 import useAuth from '../hooks/useAuth';
+import { Teacher } from '../api/TeacherService';
 
-export interface Teacher {
-  id: number;
-  name: string;
-  age: number;
-  subject: number;
-  address: string;
-  phoneNumber: number;
-  taughtCourse: {
-    id: number;
-    name: string;
-    studentCourses: {
-      studentId: number;
-      courseId: number;
-    }[];
-  };
-}
+// export interface Teacher {
+//   id: number;
+//   name: string;
+//   age: number;
+//   subject: number;
+//   address: string;
+//   phoneNumber: number;
+//   taughtCourse: {
+//     id: number;
+//     name: string;
+//     studentCourses: {
+//       studentId: number;
+//       courseId: number;
+//     }[];
+//   };
+// }
 
 const TeachersTab = () => {
 
@@ -69,7 +70,7 @@ const TeachersTab = () => {
           {!loading && (
             <tbody>
               {teachers.map((teacher, index) => (
-                <Teacher
+                <TeacherComponent
                   key={teacher.id}
                   id={teacher.id}
                   name={teacher.name}

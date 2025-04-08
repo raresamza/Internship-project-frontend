@@ -15,6 +15,9 @@ import { Toaster } from './@/components/ui/sonner'
 import NotFound from './components/NotFound'
 import ClassroomTab from './components/ClassroomTab'
 import ClassroomDetails from './components/ClassroomDetails'
+import HomeworkSubmissionsPage from './components/HomeworkSubmissionsPage'
+import AssignHomework from './components/AssignHomework'
+import HomeworkGradingPage from './components/HomeworkGradingPage'
 function App() {
 
   return (
@@ -35,6 +38,10 @@ function App() {
           <Route path="/classrooms" element={<ClassroomTab />} />
           <Route path="/classrooms/:id" element={<ClassroomDetails />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/courses/:courseId/assign-homework" element={<AssignHomework />} />
+          {/* <Route path="/homeworks/:homeworkId/grade" element={<HomeworkGradingPage />} /> */}
+          <Route path="/homeworks/:homeworkId/submissions" element={<HomeworkSubmissionsPage />} />
+          <Route path="/homeworks/:homeworkId/submissions/grade" element={<HomeworkSubmissionsPage/>} />
         </Routes>
       </BrowserRouter>
 

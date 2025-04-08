@@ -54,11 +54,12 @@ export const register = async (formValues: any) => {
         }
     }
 };
+
 export const login = async (email: string, password: string) => {
     try {
         const response = await axios.post(`${BASE_URL}/login`, { email, password });
         localStorage.setItem("token", JSON.stringify(response.data.token));
     } catch (error) {
         console.log(error);
-    }
+    }   
 };

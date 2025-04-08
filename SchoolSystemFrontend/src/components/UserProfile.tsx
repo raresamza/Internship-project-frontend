@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import useAuth from '../hooks/useAuth';
+import { toast } from 'sonner';
+import { sendGradeChart } from '../api/HomeworkService';
 
 
 
@@ -154,15 +156,29 @@ const UserProfile = () => {
             Check presence
           </motion.button>
         </Link>
-        <Link className='flex flex-col justify-center' to="/courses">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className='px-44 outline-none border-none bg-transparent underline text-xl font-semibold flex justify-start items-center'
-          >
-            Check course work
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  className='px-44 outline-none border-none bg-transparent underline text-xl font-semibold flex justify-start items-center'
+  onClick={async () => {
+    try {
+      // Replace with your actual studentId and PDF blob if needed
+      const studentId = 1;
+
+      // Example: create a dummy file or fetch from blob generation
+      const pdfBlob = new Blob(["Dummy grade content"], { type: "application/pdf" });
+      const file = new File([pdfBlob], "grades.pdf", { type: "application/pdf" });
+
+      await sendGradeChart(studentId, file);
+      toast.success("📬 Email sent!");
+    } catch (err) {
+      console.error(err);
+      toast.error("❌ Error");
+    }
+  }}
+>
+  Send Grade Chart
           </motion.button>
-        </Link>
       </motion.div >
     </>
   )

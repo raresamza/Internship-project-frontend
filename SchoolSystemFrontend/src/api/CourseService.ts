@@ -3,6 +3,14 @@ import axios from "axios";
 
 const API_URL = "https://localhost:7213/api/Course";
 
+export interface Homework {
+  id: number;
+  title: string;
+  description: string;
+  deadline: string;
+  grade?: number;
+};
+
 export interface Course {
   id: number;
   name: string;
@@ -10,11 +18,20 @@ export interface Course {
   teacherId?: string;
   teacherName?: string;
   studentCourses?: StudentCourse[];
+  homeworks?: Homework[]
 }
 
 export interface StudentCourse {
   studentId: number;
-  studentName?: string;
+  studentName?:string;
+  courseId?: string;
+}
+
+export interface AssignHomeworkDto {
+  courseId: number;
+  title: string;
+  description: string;
+  deadline: string; // ISO format
 }
 
 export interface GradeParams {
@@ -37,6 +54,7 @@ export async function getCourseById(id: number): Promise<Course> {
   console.log(id)
   console.log(`${API_URL}/${id}`)
   const response = await axios.get<Course>(`${API_URL}/${id}`);
+  console.log(response.data)
   return response.data;
 }
 
@@ -97,3 +115,7 @@ export const getCoursesBySubject = async (subjectId: number): Promise<Course[]> 
   const response = await axios.get(`${API_URL}/subject/${subjectId}`);
   return response.data;
 };
+
+export async function assignHomework(data: AssignHomeworkDto): Promise<void> {
+  await axios.post(`${API_URL}/${data.courseId}/assign-homework`, data);
+}
