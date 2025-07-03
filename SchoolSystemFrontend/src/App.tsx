@@ -18,6 +18,7 @@ import ClassroomDetails from './components/ClassroomDetails'
 import HomeworkSubmissionsPage from './components/HomeworkSubmissionsPage'
 import AssignHomework from './components/AssignHomework'
 import HomeworkGradingPage from './components/HomeworkGradingPage'
+import ClassLeaderboardPage from './components/ClassLeaderboardPage'
 function App() {
 
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/courses/:courseId/assign-homework" element={<AssignHomework />} />
           {/* <Route path="/homeworks/:homeworkId/grade" element={<HomeworkGradingPage />} /> */}
+          <Route path="/leaderboard/class" element={<ClassLeaderboardPage />} />
           <Route path="/homeworks/:homeworkId/submissions" element={<HomeworkSubmissionsPage />} />
           <Route path="/homeworks/:homeworkId/submissions/grade" element={<HomeworkSubmissionsPage/>} />
         </Routes>

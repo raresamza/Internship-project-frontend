@@ -162,7 +162,7 @@ const ClassroomDetails: React.FC = () => {
   const handleAddStudent = async () => {
     if (selectedStudentToAdd) {
       try {
-        await addStudentToClassroom(selectedStudentToAdd.id, Number(id));
+        await addStudentToClassroom(Number(id),selectedStudentToAdd.id);
         toast.success("Student added successfully 🎉", {
           style: {
             backgroundColor: 'green',
@@ -196,7 +196,7 @@ const ClassroomDetails: React.FC = () => {
   const handleRemoveStudent = async () => {
     if (selectedStudentToRemove) {
       try {
-        await removeStudentFromClassroom(selectedStudentToRemove.id, Number(id));
+        await removeStudentFromClassroom(Number(id),selectedStudentToRemove.id);
         toast.success("Student removed successfully 🎉", {
           style: {
             backgroundColor: 'green',

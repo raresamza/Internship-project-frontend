@@ -9,6 +9,10 @@ import { Loader2 } from 'lucide-react';
 import useAuth from '../hooks/useAuth';
 import { toast } from 'sonner';
 import { sendGradeChart } from '../api/HomeworkService';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { getStudentByEmail,downloadStudentSchedule } from '../api/StudentService'; 
+import { logout } from '../api/AuthService';
 
 
 
@@ -67,6 +71,7 @@ const UserProfile = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={logout}
               className='outline-none border-none bg-transparent underline flex py-8 text-xl font-semibold'
             >
               Logout
@@ -138,7 +143,7 @@ const UserProfile = () => {
         transition={{ duration: 0.5, delay: 1.3 }}
         className='flex items-center justify-between text-center h-60'
       >
-        <Link className='flex flex-col justify-center' to="/grades">
+        <Link className='flex flex-col justify-center' to="/catalogue">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -147,7 +152,7 @@ const UserProfile = () => {
             Check grades
           </motion.button>
         </Link>
-        <Link className='flex flex-col justify-center' to="/absences">
+        <Link className='flex flex-col justify-center' to="/catalogue">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -156,29 +161,23 @@ const UserProfile = () => {
             Check presence
           </motion.button>
         </Link>
-          <motion.button
+<motion.button
   whileHover={{ scale: 1.05 }}
   whileTap={{ scale: 0.95 }}
   className='px-44 outline-none border-none bg-transparent underline text-xl font-semibold flex justify-start items-center'
   onClick={async () => {
     try {
-      // Replace with your actual studentId and PDF blob if needed
-      const studentId = 1;
-
-      // Example: create a dummy file or fetch from blob generation
-      const pdfBlob = new Blob(["Dummy grade content"], { type: "application/pdf" });
-      const file = new File([pdfBlob], "grades.pdf", { type: "application/pdf" });
-
-      await sendGradeChart(studentId, file);
-      toast.success("📬 Email sent!");
-    } catch (err) {
-      console.error(err);
-      toast.error("❌ Error");
+      const student = await getStudentByEmail(decoded?.email);
+      await downloadStudentSchedule(student.id);
+    } catch (error) {
+      toast.error("❌ Could not download schedule");
+      console.error(error);
     }
   }}
 >
-  Send Grade Chart
-          </motion.button>
+  Download Timetable
+</motion.button>
+
       </motion.div >
     </>
   )

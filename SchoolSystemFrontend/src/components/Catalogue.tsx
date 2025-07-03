@@ -14,6 +14,7 @@ import GpaSection from './GpaSection';
 import GradesSection from './GradesSection';
 import StudentSelector from './StudentSelector';
 import Searchbar from './Searchbar';
+import { increaseParticipationPoints } from '../api/CourseService';
 
 interface CatalogueProps {
   students: Student[];
@@ -125,13 +126,28 @@ const Catalogue: React.FC<CatalogueProps> = ({ students, refreshStudents }) => {
                       {grade.courseName}
                     </CardTitle>
                     <StudentSelector
-                      students={students.filter(student => 
+                      students={students.filter(student =>
                         student.grades.some(g => g.courseId === grade.courseId)
                       )}
                       handleStudentSelect={handleStudentSelect}
                     />
                   </CardHeader>
                   <CardContent className='bg-emerald-200 px-10 py-4 w-full'>
+
+                    {students.map(student => (
+                      student.grades.some(g => g.courseId === grade.courseId) && (
+                        <div key={student.id} className="mb-2 flex items-center justify-between">
+                          <span>{student.name}</span>
+                          <button
+                            onClick={() => increaseParticipationPoints(student.id, grade.courseId)}
+                            className="bg-emerald-600 text-white px-3 py-1 rounded hover:bg-emerald-700"
+                          >
+                            + Participation
+                          </button>
+                        </div>
+                      )
+                    ))}
+
                     {selectedStudentDetails && (
                       <>
                         <GradesSection

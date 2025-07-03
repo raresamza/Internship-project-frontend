@@ -2,9 +2,9 @@ import axios from "axios";
 import { StudentCourse } from "./CourseService";
 import { Teacher } from "./TeacherService";
 import { Student } from "./StudentService";
-
+import api from "../utils/axios";
 const API_URL = "https://localhost:7213/api/Classroom";
-
+const API_PREFIX = "/Classroom"
 
 export interface Classroom {
     studentCourses: ClassroomCourse []
@@ -28,7 +28,7 @@ export interface TeacherClassroom{
  
 
 export async function getClassrooms(pageNumber: number = 1, pageSize: number = 10): Promise<Classroom[]> {
-    const response = await axios.get<{ items: Classroom[] }>(API_URL, {
+    const response = await api.get<{ items: Classroom[] }>(API_PREFIX, {
       params: {
         pageNumber,
         pageSize,
@@ -39,13 +39,13 @@ export async function getClassrooms(pageNumber: number = 1, pageSize: number = 1
 
 
   export async function getClassroomById(id: number): Promise<Classroom> {
-    const response = await axios.get<Classroom>(`${API_URL}/${id}`);
+    const response = await api.get<Classroom>(`${API_PREFIX}/${id}`);
     return response.data;
   }
 
   export const addStudentToClassroom = async (classroomId: number, studentId: number): Promise<void> => {
     try {
-      await axios.put(`${API_URL}/add/student`, null, {
+      await api.put(`${API_PREFIX}/add/student`, null, {
         params: {
           studentId,
           classroomId,
@@ -57,7 +57,7 @@ export async function getClassrooms(pageNumber: number = 1, pageSize: number = 1
 };
 export const removeStudentFromClassroom = async (classroomId: number, studentId: number): Promise<void> => {
     try {
-      await axios.put(`${API_URL}/remove/student`, null, {
+      await api.put(`${API_PREFIX}/remove/student`, null, {
         params: {
           studentId,
           classroomId,
@@ -71,7 +71,7 @@ export const removeStudentFromClassroom = async (classroomId: number, studentId:
 
 export const addTeacherToClassroom = async ( teacherId: number,classroomId: number): Promise<void> => {
     try {
-      await axios.put(`${API_URL}/add/teacher`, null, {
+      await api.put(`${API_PREFIX}/add/teacher`, null, {
         params: {
           teacherId,
           classroomId,
@@ -84,7 +84,7 @@ export const addTeacherToClassroom = async ( teacherId: number,classroomId: numb
 };
 export const removeTeacherFromClassroom = async (teacherId: number,classroomId: number ): Promise<void> => {
     try {
-      await axios.put(`${API_URL}/remove/teacher`, null, {
+      await api.put(`${API_PREFIX}/remove/teacher`, null, {
         params: {
             teacherId,
           classroomId,

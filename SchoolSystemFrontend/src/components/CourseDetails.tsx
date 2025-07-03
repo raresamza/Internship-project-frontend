@@ -15,10 +15,8 @@ import AssignHomeworkDialog from './AssignHomeworkDialog';
 
 const CourseDetails = () => {
   const { courseId } = useParams<{ courseId: string }>();
-
   const token = useAuth();
   const role = token?.role;
-  // console.log(to)
 
   const [course, setCourse] = useState<Course | null>(null);
   const [loading, setLoading] = useState(true);
@@ -28,18 +26,11 @@ const CourseDetails = () => {
   const [studentId, setStudentId] = useState<number | null>(null);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
 
-
-
-
   useEffect(() => {
     if (role === 'Student' && token?.email) {
       getStudentByEmail(token.email)
-        .then(student => {
-          setStudentId(student.id);
-        })
-        .catch(err => {
-          console.error('Failed to get student by email:', err);
-        });
+        .then(student => setStudentId(student.id))
+        .catch(err => console.error('Failed to get student by email:', err));
     }
   }, [token, role]);
 
@@ -91,56 +82,34 @@ const CourseDetails = () => {
               </motion.h1>
             </CardHeader>
             <CardContent className="p-6">
-              <motion.div
-                className="mb-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
+              <motion.div className="mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
                 <p className="text-lg font-medium">Subject: <span className="font-normal">{getSubjectName(course.subject)}</span></p>
               </motion.div>
-              <motion.div
-                className="mb-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-              >
+              <motion.div className="mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
                 <p className="text-lg font-medium">Teacher ID: <span className="font-normal">{course.teacherId || "Not assigned yet"}</span></p>
               </motion.div>
-              <motion.div
-                className="mb-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-              >
+              <motion.div className="mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
                 <p className="text-lg font-medium">Teacher Info: <span className="font-normal">{course.teacherName || "Not assigned yet"}</span></p>
               </motion.div>
-              <motion.div
-                className="mt-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.6 }}
-              >
+              <motion.div className="mt-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}>
                 <h2 className="text-xl font-semibold mb-4">Assigned Homework</h2>
                 {course.homeworks && course.homeworks.length > 0 ? (
                   <div className="space-y-4">
-                    {course.homeworks.map((hw, index) => (
-                      <Card key={hw.id} className="bg-white shadow-sm border border-gray-200 p-4 cursor-pointer"
+                    {course.homeworks.map((hw) => (
+                      <Card
+                        key={hw.id}
+                        className="bg-white shadow-sm border border-gray-200 p-4 cursor-pointer"
                         onClick={() => {
-                          if (role === 'Teacher' || role === 'Admin') {
-                            window.location.href = `/homeworks/${hw.id}/submissions`;
-
-                          } else {
-                            console.log("Selected homework:", hw);
-                            setSelectedHomework(hw);
-                            setUploadDialogOpen(true);
-                          }
-                        }}>
+                          window.location.href = `/homeworks/${hw.id}/submissions`;
+                        }}
+                      >
                         <h3 className="text-lg font-bold">{hw.title}</h3>
                         <p className="text-sm text-gray-700 mt-1">{hw.description}</p>
                         <div className="flex items-center justify-between mt-3">
                           <div className="text-sm text-gray-500">
-                            Due: <span className="font-medium text-black">{new Date(hw.deadline).toLocaleDateString()}</span>
+                            <span className={`font-medium ${new Date(hw.deadlineFormatted) < new Date() ? 'text-red-600' : 'text-black'}`}>
+                              {new Date(hw.deadlineFormatted).toLocaleDateString()}
+                            </span>
                           </div>
                           {(role !== 'Teacher' && role !== 'Admin') && (
                             hw.grade !== undefined && hw.grade !== null ? (
@@ -154,6 +123,21 @@ const CourseDetails = () => {
                             )
                           )}
                         </div>
+
+                        {(role === 'Student') && (
+                          <div className="mt-4 flex justify-end">
+                            <button
+                              className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded-md transition"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent card click
+                                setSelectedHomework(hw);
+                                setUploadDialogOpen(true);
+                              }}
+                            >
+                              Upload Homework
+                            </button>
+                          </div>
+                        )}
                       </Card>
                     ))}
                   </div>
@@ -163,18 +147,8 @@ const CourseDetails = () => {
               </motion.div>
             </CardContent>
             <CardFooter className="bg-gray-100 p-6 rounded-b-lg flex justify-between items-center">
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2 }}
-                className="flex items-center space-x-4 w-full"
-              >
-                <motion.h2
-                  className="text-lg font-medium whitespace-nowrap"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                >
+              <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }} className="flex items-center space-x-4 w-full">
+                <motion.h2 className="text-lg font-medium whitespace-nowrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
                   Enrolled Students:
                 </motion.h2>
                 <Select>
@@ -183,16 +157,8 @@ const CourseDetails = () => {
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-300 rounded-md shadow-lg mt-1">
                     {course.studentCourses?.map((student, index) => (
-                      <motion.div
-                        key={student.studentId}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <SelectItem
-                          value={student.studentId.toString()}
-                          className="p-2 hover:bg-gray-100"
-                        >
+                      <motion.div key={student.studentId} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
+                        <SelectItem value={student.studentId.toString()} className="p-2 hover:bg-gray-100">
                           {student.studentName}
                         </SelectItem>
                       </motion.div>
@@ -224,6 +190,7 @@ const CourseDetails = () => {
               )}
             </CardFooter>
           </Card>
+
           <EnrollStudentDialog
             isOpen={isEnrollDialogOpen}
             setIsOpen={setIsEnrollDialogOpen}
@@ -231,14 +198,19 @@ const CourseDetails = () => {
             course={course}
             refreshCourse={fetchCourseDetails}
           />
+
           {selectedHomework && role === 'Student' && (
             <UploadHomeworkDialog
               isOpen={uploadDialogOpen}
-              onClose={() => setUploadDialogOpen(false)}
+              onClose={() => {
+                setUploadDialogOpen(false)
+                setSelectedHomework(null)
+              }}
               homeworkId={selectedHomework.id}
               studentId={studentId}
             />
           )}
+
           <AssignHomeworkDialog
             isOpen={assignDialogOpen}
             onClose={() => setAssignDialogOpen(false)}
@@ -248,7 +220,7 @@ const CourseDetails = () => {
         </motion.div>
       ) : (
         <div className="flex items-center justify-center min-h-[calc(100vh-80px)] w-full">
-          <p className='text-lg font-medium'>Course not found</p>
+          <p className="text-lg font-medium">Course not found</p>
         </div>
       )}
     </>

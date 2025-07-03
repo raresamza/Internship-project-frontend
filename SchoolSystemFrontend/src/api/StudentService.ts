@@ -1,7 +1,21 @@
 import axios from 'axios';
+import { toast } from 'sonner';
+import api from '../utils/axios';
 
+
+// await api.get('/Student');
 
 const API_URL = "https://localhost:7213/api/Student";
+const API_PREFIX = "/Student";
+
+export interface HomeworkSubmission {
+  id: number;
+  studentId: number;
+  studentName: string;
+  fileUrl: string;
+  grade?: number;
+  isCompleted: boolean;
+}
 
 export interface Student {
     id: number;
@@ -65,7 +79,7 @@ export interface Absence {
   
   
   export async function getUsers(pageNumber: number = 1, pageSize: number = 10): Promise<Student[]> {
-    const response = await axios.get<{ items: Student[] }>(API_URL, {
+    const response = await api.get<{ items: Student[] }>(API_PREFIX, {
       params: {
         pageNumber,
         pageSize,
@@ -75,9 +89,9 @@ export interface Absence {
     return response.data.items;
   }
 
-  export const getStudentByEmail = async (email: string): Promise<Student> => {
+  export const getStudentByEmail = async (email: string | undefined): Promise<Student> => {
     try {
-      const response = await axios.get(`${API_URL}/by-email`, {
+      const response = await api.get(`${API_PREFIX}/by-email`, {
         params: { email }
       });
       return response.data;
@@ -90,7 +104,7 @@ export interface Absence {
   // Function to add an absence to a student
   export async function addAbsence(params: AbsenceParams): Promise<void> {
     try {
-      const response = await axios.post(`${API_URL}/absence`, null, {
+      const response = await api.post(`${API_PREFIX}/absence`, null, {
         params: {
           studentId: params.studentId,
           absenceId: params.absenceId, // Corrected to use absenceId
@@ -111,7 +125,7 @@ export interface Absence {
   
   export async function removeAbsence(params: DeleteAbsenceParams): Promise<void> {
     try {
-      const response = await axios.delete(`${API_URL}/removeAbsence`, {
+      const response = await api.delete(`${API_PREFIX}/removeAbsence`, {
         params: {
           studentId: params.studentId,
           absenceId: params.absenceId,
@@ -131,24 +145,24 @@ export interface Absence {
 
 
   export const getAllStudents = async (): Promise<Student[]> => {
-    const response = await axios.get(`${API_URL}/all`); // Adjust the URL if needed
+    const response = await api.get(`${API_PREFIX}/all`); // Adjust the URL if needed
     
     return response.data;
   };
 
   export const createStudent = async (student: StudentCreationDto): Promise<Student> => {
-    const response = await axios.post(`${API_URL}`, student);
+    const response = await api.post(`${API_PREFIX}`, student);
     return response.data;
   };
 
   export const deleteStudent = async (id: number): Promise<void> => {
-    await axios.delete(`${API_URL}/${id}`);
+    await api.delete(`${API_PREFIX}/${id}`);
   };
 
 
   export const getUsersQuery = async (page: number, pageSize: number, query: string = ''): Promise<{ students: Student[], totalCount: number }> => {
     try {
-      const response = await axios.get(`${API_URL}/query`, {
+      const response = await api.get(`${API_PREFIX}/query`, {
         params: { page, pageSize, query: query || '' } // Default to empty string if query is null or undefined
       });
       console.log(response.data)
@@ -165,7 +179,7 @@ export interface Absence {
   // New function to search students by name
   export const searchStudentsByName = async (name: string): Promise<Student[]> => {
     try {
-      const response = await axios.get(`${API_URL}`, {
+      const response = await api.get(`${API_PREFIX}`, {
         params: { query: name }
       });
       return response.data.students;
@@ -183,7 +197,7 @@ export interface Absence {
     const formData = new FormData();
     formData.append('file', file);
   
-    await axios.post(
+    await api.post(
       `https://localhost:7213/api/Homework/${studentId}/submit-homework/${homeworkId}`,
       formData,
       {
@@ -193,3 +207,31 @@ export interface Absence {
       }
     );
   };
+
+  export const fetchHomeworkSubmissions = async (
+  homeworkId: number
+): Promise<HomeworkSubmission[]> => {
+  const response = await api.get(`/Student/${homeworkId}/submissions`);
+  return response.data;
+};
+
+export async function downloadStudentSchedule(studentId: number): Promise<void> {
+  try {
+    const response = await api.get(`/Student/${studentId}/schedule`, {
+      responseType: 'blob', // Important for file download
+    });
+
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'timetable.pdf';
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Error downloading student schedule:', error);
+    throw error;
+  }
+}

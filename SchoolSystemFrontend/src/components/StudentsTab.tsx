@@ -43,6 +43,7 @@ interface Absence {
 const StudentsTab: React.FC = () => {
   const token = useAuth();
   const role = token?.role;
+  console.log(role)
 
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState<Student[]>([]);
@@ -146,7 +147,7 @@ const StudentsTab: React.FC = () => {
           }
 
           <div className="bottom-4 left-20 p-4">
-            {pageNumber > 1 && (
+            {pageNumber > 1 && role==="Admin" && (
               <motion.button
                 className='bg-red-500 text-white hover:bg-red-700 rounded-md h-10 px-4 py-2 mr-2'
                 onClick={handlePreviousPage}
@@ -157,7 +158,7 @@ const StudentsTab: React.FC = () => {
                 Previous
               </motion.button>
             )}
-            {!isLastPage && (
+            {!isLastPage && role==="Admin" && (
               <motion.button
                 className='bg-green-500 text-white hover:bg-green-700 rounded-xl h-10 px-4 py-2'
                 onClick={handleLoadMore}
@@ -169,7 +170,7 @@ const StudentsTab: React.FC = () => {
               </motion.button>
             )}
           </div>
-          {role !== 'Student' && (
+          {role !== 'Student' && role!== 'Parent' && (
             <div className="bottom-4 right-10 p-4 flex space-x-4">
               <AddStudentDialog refreshStudents={loadInitialStudents} />
               <DeleteStudentDialog refreshStudents={loadInitialStudents} />

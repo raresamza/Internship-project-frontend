@@ -8,17 +8,39 @@ import {
 } from '../api/HomeworkService';
 import GradeHomeworkForm from './GradeHomeworkForm';
 import { toast } from 'sonner';
+import Navbar from './Navbar';
+import useAuth from '../hooks/useAuth';
+
+
+
 
 const HomeworkSubmissionsPage = () => {
 	const { homeworkId } = useParams<{ homeworkId: string }>();
 	const [submissions, setSubmissions] = useState<Submission[]>([]);
+	const token = useAuth();
+  	const role = token?.role;
+
 
 	const fetchSubmissions = async () => {
-		if (!homeworkId) return;
-		const res = await fetch(`https://localhost:7213/api/Student/${homeworkId}/submissions`);
-		const data = await res.json();
-		setSubmissions(data);
-	};
+	if (!homeworkId) return;
+
+	const token = localStorage.getItem('token')?.replace(/"/g, '');
+
+	const res = await fetch(`https://localhost:7213/api/Student/${homeworkId}/submissions`, {
+		headers: {
+			'Authorization': `Bearer ${token}`,
+			'Content-Type': 'application/json'
+		}
+	});
+
+	if (!res.ok) {
+		console.error('Failed to fetch submissions:', res.statusText);
+		return;
+	}
+
+	const data = await res.json();
+	setSubmissions(data);
+};
 
 	useEffect(() => {
 		fetchSubmissions();
@@ -32,7 +54,11 @@ const HomeworkSubmissionsPage = () => {
 		await fetchSubmissions(); // refresh after grading
 	};
 
+	console.log(submissions)
+
 	return (
+		<>
+		<Navbar/>
 		<div className="p-6">
 			<h2 className="text-xl font-bold mb-4">Homework Submissions</h2>
 			{submissions.length === 0 ? (
@@ -53,17 +79,19 @@ const HomeworkSubmissionsPage = () => {
 							</div>
 
 							{/* Middle: Download Button */}
+							{(role === "Admin" || role === "Teacher") && (
 							<div className="flex-shrink-0">
 								<Button
 									onClick={() =>
-										downloadStudentHomework(s.id, parseInt(homeworkId ?? "0"))
+										downloadStudentHomework(s.studentId, parseInt(homeworkId ?? "0"))
 									}
 								>
 									Download
 								</Button>
 							</div>
-
+					)}
 							{/* Right: Grade Form */}
+							{(role === "Admin" || role === "Teacher") && (
 							<div className="flex-shrink-0 w-full md:w-auto">
 								<GradeHomeworkForm
 									studentId={s.studentId}
@@ -71,7 +99,7 @@ const HomeworkSubmissionsPage = () => {
 									currentGrade={s.grade}
 									onSubmit={async (grade) => {
 										try {
-											await gradeStudentHomework(s.studentId, parseInt(homeworkId!), grade);
+											await gradeStudentHomework(parseInt(homeworkId!),s.studentId, grade);
 											toast.success("Grade added successfully!")
 										} catch (error) {
 											toast.error("Could not add grade.")
@@ -79,11 +107,13 @@ const HomeworkSubmissionsPage = () => {
 									}}
 								/>
 							</div>
+							)}
 						</li>
 					))}
 				</ul>
 			)}
 		</div>
+		</>
 	);
 };
 

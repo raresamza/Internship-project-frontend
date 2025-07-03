@@ -1,6 +1,8 @@
-import axios from "axios"
+import axios, {isAxiosError} from "axios"
+import api from "../utils/axios";
 
 const BASE_URL = "https://localhost:7213/Account"
+const API_PREFIX= "/Account";
 
 interface IAuth {
     email: string,
@@ -35,14 +37,14 @@ export const register = async (formValues: any) => {
     };
 
     try {
-        const response = await axios.post(`${BASE_URL}/register`, formDataWithRole, {
+        const response = await api.post(`${BASE_URL}/register`, formDataWithRole, {
             headers: {
                 'Content-Type': 'application/json', // Ensure proper JSON content type
             },
         });
         localStorage.setItem('token', JSON.stringify(response.data.token));
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        if (isAxiosError(error)) {
             console.error('Error message:', error.message);
             if (error.response) {
                 console.error('Response data:', error.response.data);
@@ -57,9 +59,14 @@ export const register = async (formValues: any) => {
 
 export const login = async (email: string, password: string) => {
     try {
-        const response = await axios.post(`${BASE_URL}/login`, { email, password });
+        const response = await api.post(`${API_PREFIX}/login`, { email, password });
         localStorage.setItem("token", JSON.stringify(response.data.token));
     } catch (error) {
         console.log(error);
     }   
+};
+
+export const logout = () => {
+  localStorage.removeItem("token");           
+  window.location.href = "/login";            
 };

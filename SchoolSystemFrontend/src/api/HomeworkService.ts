@@ -1,7 +1,8 @@
 import axios from "axios";
+import api from "../utils/axios";
 
 const API_URL="https://localhost:7213/api/Homework"
-
+const API_PREFIX = "/Homework"
 
 export interface GradeSubmission {
   id: number;
@@ -23,6 +24,13 @@ export interface HomeworkDto {
   }[];
 }
 
+export interface UploadHomeworkParams {
+  studentId: number;
+  homeworkId: number;
+  file: File;
+}
+
+
 export interface Submission {
   id: number;
   studentId: number;
@@ -35,8 +43,8 @@ export interface Submission {
 
 
 export const downloadStudentHomework = async (studentId: number, homeworkId: number) => {
-  const response = await axios.get(
-    `https://localhost:7213/api/Homework/download-homework`,
+  const response = await api.get(
+    `/Homework/download-homework`,
     {
       params: { studentId, homeworkId },
       responseType: "blob", // 👈 ensures file is treated as binary
@@ -64,13 +72,13 @@ export const downloadStudentHomework = async (studentId: number, homeworkId: num
 
 
 export async function getHomeworkWithStudents(homeworkId: number) {
-  const response = await axios.get(`${API_URL}/${homeworkId}`);
+  const response = await api.get(`${API_PREFIX}/${homeworkId}`);
   return response.data;
 }
 
 export async function gradeStudentHomework(studentId: number, homeworkId: number, grade: number): Promise<void> {
   try {
-    await axios.post(`${API_URL}/grade`, null, {
+    await api.post(`${API_URL}/grade`, null, {
       params: {
         studentId,
         homeworkId,
@@ -86,9 +94,33 @@ export async function gradeStudentHomework(studentId: number, homeworkId: number
 
 
 // In HomeworkService.ts or a dedicated MailService.ts
-export async function sendGradeChart(studentId: number, file: File): Promise<void> {
+export async function sendGradeChart(studentId: number, file: File) {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append('file', file); // must match [FromForm(Name = "file")]
 
-  await axios.post(`$https://localhost:7213/api/Student/${studentId}/send-grade-chart`, formData);
+  await api.post(`https://localhost:7213/api/Student/${studentId}/send-grade-chart`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 }
+
+export const uploadHomeworkFile = async ({
+  studentId,
+  homeworkId,
+  file
+}: UploadHomeworkParams): Promise<void> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  await api.post(
+    `https://localhost:7213/api/Homework/${studentId}/submit-homework/${homeworkId}`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+  console.log("uploaded successfully!")
+};
